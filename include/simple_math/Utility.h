@@ -1,7 +1,6 @@
 #pragma once
 
 #include "EigenDefines.h"
-#include "ExportHelper.h"
 
 namespace simple_math
 {

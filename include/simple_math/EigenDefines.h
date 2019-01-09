@@ -8,12 +8,16 @@
 
 namespace simple_math
 {
-	typedef double FloatType;
-	typedef std::array<FloatType, 3> Point;
-	typedef Eigen::Matrix<FloatType, 3, 1> Vector3D;
+	using FloatType = double;
+	using Point = std::array<FloatType, 3>;
+	using Quaternion = Eigen::Quaternion<FloatType>;
+	using Vector3D = Eigen::Matrix<FloatType, 3, 1>;
+	using Matrix3D = Eigen::Matrix<FloatType, 3, 3>;
+	using VoigtVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1, 0, 6>;
+	using VoigtMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, 0, 6, 6>;
 	/// A vector with a fixed size that is larger than the connectivity expected for any element.
-	typedef Eigen::Matrix<FloatType, Eigen::Dynamic, 1, 0, 120> ElementVector;
+	using ElementVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1, 0, 120>;
 	/// A vector with a fixed size that is larger than the connectivity expected for any element
 	/// and 3 columns for spatial derivatives.
-	typedef Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, 0, 120, 3> ElementMatrix3D;
+	using ElementMatrix3D = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, 0, 120, 3>;
 };

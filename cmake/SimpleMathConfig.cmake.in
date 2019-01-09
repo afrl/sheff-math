@@ -1,8 +1,7 @@
-# Make sure we have dependencies available
-# Note: the Eigen3 config requires that you use the installation (not the build)
-find_package(Eigen3 3.3.0 CONFIG REQUIRED
-	HINTS "${CMAKE_SOURCE_DIR}/../third_party/eigen/install_dir" "${CMAKE_SOURCE_DIR}/../eigen/install_dir"
-)
+# Make sure we have public dependencies available
+find_package(UTILITY CONFIG REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../utility/build" "${CMAKE_SOURCE_DIR}/../utility/install_dir")
+find_package(Eigen3 3.3.0 CONFIG REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../third_party/eigen/install_dir" "${CMAKE_SOURCE_DIR}/../eigen/install_dir")
+
 
 if(NOT TARGET SimpleMath::SimpleMath)
 	get_filename_component(SIMPLEMATH_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
