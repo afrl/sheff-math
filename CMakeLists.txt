@@ -10,7 +10,7 @@ option(SIMPLEMATH_BuildTests "Build the unit tests." OFF)
 ##################
 # Checking input #
 ##################
- 
+
 include(${CMAKE_SOURCE_DIR}/cmake/CommonInputChecks.cmake)
 
 ########################
@@ -42,7 +42,7 @@ target_include_directories(simplemath PUBLIC
 # Add headers in the include folder as PUBLIC so downstream
 # targets have access to them
 target_sources(simplemath PUBLIC ${SIMPLEMATH_HEADER_LIST})
-# Add headers and sources in the src folder as PRIVATE as they
+# Add headers and sources in the source folder as PRIVATE as they
 # will not be needed downstream
 target_sources(simplemath PRIVATE ${SIMPLEMATH_SOURCE_LIST})
 # Add an alias so that a library can be used inside the build tree, eg when testing
@@ -52,6 +52,12 @@ target_compile_features(simplemath PUBLIC cxx_std_14)
 # Link dependencies
 target_link_libraries(simplemath PUBLIC Utility::Utility)
 target_link_libraries(simplemath PUBLIC Eigen3::Eigen)
+
+# Group source files
+include(${CMAKE_SOURCE_DIR}/cmake/Utilities.cmake)
+assign_source_group("simple_math" ${SIMPLEMATH_HEADER_LIST})
+assign_source_group("simple_math" ${SIMPLEMATH_SOURCE_LIST})
+assign_source_group_utility()
 
 
 #################################

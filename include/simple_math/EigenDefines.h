@@ -17,7 +17,9 @@ namespace simple_math
 	using VoigtMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, 0, 6, 6>;
 	/// A vector with a fixed size that is larger than the connectivity expected for any element.
 	using ElementVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1, 0, 120>;
-	/// A vector with a fixed size that is larger than the connectivity expected for any element
+	/// A matrix with a fixed size that is larger than the connectivity expected for any element
 	/// and 3 columns for spatial derivatives.
 	using ElementMatrix3D = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, 0, 120, 3>;
+	/// A matrix with both dimensions larger than the amount of DoF's expected for a single element
+	using ElementMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, 120, 120>;
 };
