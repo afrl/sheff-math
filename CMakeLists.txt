@@ -53,7 +53,8 @@ target_compile_features(simplemath PUBLIC cxx_std_14)
 target_link_libraries(simplemath PUBLIC Utility::Utility)
 target_link_libraries(simplemath PUBLIC Eigen3::Eigen)
 
-# Group source files
+
+# Assign source groups
 include(${CMAKE_SOURCE_DIR}/cmake/Utilities.cmake)
 assign_source_group("simple_math" ${SIMPLEMATH_HEADER_LIST})
 assign_source_group("simple_math" ${SIMPLEMATH_SOURCE_LIST})
