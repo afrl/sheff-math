@@ -1,6 +1,7 @@
 #pragma once
 
 #define EIGEN_MAX_CPP_VER 11
+#define EIGEN_STACK_ALLOCATION_LIMIT 3686400
 #include "Eigen/Eigen"
 
 #include <numeric>
@@ -10,8 +11,8 @@ namespace simple_math
 {
 	// Constants that specify the limits of various quantities within an element
 	// that in turn are used to create fixed Eigen matrix types
-	static constexpr int MAX_N_NODES = 30;
-	static constexpr int MAX_N_DOFS_PER_NODE = 15;
+	static constexpr int MAX_N_NODES = 20;
+	static constexpr int MAX_N_DOFS_PER_NODE = 12;
 	static constexpr int MAX_N_QUAD_POINTS = 20;
 	static constexpr int MAX_N_NODE_DOFS_PER_ELEMENT = MAX_N_NODES * MAX_N_DOFS_PER_NODE;
 	static constexpr int MAX_N_QUAD_DOFS_PER_ELEMENT = MAX_N_QUAD_POINTS * MAX_N_DOFS_PER_NODE;
