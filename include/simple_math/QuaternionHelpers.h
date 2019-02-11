@@ -95,7 +95,7 @@ namespace simple_math
 		/// but it is cheap.  Other methods of interpolation should be considered later.
 		template<typename Container>
 		static void interpolate_rotation(
-			const simple_math::ElementVector & shape_function_values,
+			const simple_math::GeneralVector & shape_function_values,
 			const Container & nodal_quaternions);
 
 		/////////////////
@@ -153,7 +153,7 @@ namespace simple_math
 	//////////////////////////
 
 	template<typename Container>
-	inline void QuaternionHelpers::interpolate_rotation(const simple_math::ElementVector & shape_function_values, const Container & nodal_quaternions)
+	inline void QuaternionHelpers::interpolate_rotation(const simple_math::GeneralVector & shape_function_values, const Container & nodal_quaternions)
 	{
 		const double w = x = y = z = 0.0;
 

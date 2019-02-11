@@ -1,5 +1,7 @@
 #pragma once
 
+#include "simple_math/EigenDefines.h"
+
 #include "Gauss.h"
 #include "Gauss2D.h"
 #include "Gauss3D.h"
@@ -13,16 +15,17 @@
 namespace simple_math
 {
 
-	enum class QuadratureType {
-		Gauss1D,
-		Gauss2D,
-		Gauss3D,
-		Gauss2DTriangle,
-		Gauss3DTet,
-		Gauss3DWedge,
-		NewtonCotes1D,
-		NewtonCotes2D,
-		NewtonCotes3D
+	enum class QuadratureType : int8_t {
+		Gauss1D, ///< Standard Gauss quadrature (order will refer to # of quad points)
+		Gauss2D, ///< See Gauss1D
+		Gauss3D, ///< See Gauss1D
+		Gauss2DTriangle, ///< Gauss quadrature specialized for triangles, which use area coordinates (max order is 4)
+		Gauss3DTet, ///< Gauss quadrature specialized for tetrahedrals (max order is 4)
+		Gauss3DWedge, ///< Gauss quadrature specialized for wedges, due to area coordinates of triangles (max order is 4)
+		NewtonCotes1D, ///< Evenly spaced quad-points from -1 to 1 (order will refer to # of quad points)
+		NewtonCotes2D, ///< See NewtonCotes1D
+		NewtonCotes3D, ///< See NewtonCotes1D
+		UNKNOWN ///< Must be last! Used by Mapping class to know the last QuadratureType.
 	};
 
 	class Quadrature
@@ -34,14 +37,20 @@ namespace simple_math
 		void setup(const QuadratureType &qt, const unsigned int integration_order);
 		void reset();
 
+		const QuadratureType& get_type() const { return type_; }
+		const unsigned int& get_integration_order() const { return integration_order_; }
 		const unsigned int& n_quad_points() const { return n_quad_points_; }
-		const double& xi(const unsigned int &quadIndex) const { return get(quadIndex, xi_list_); };
-		const double& eta(const unsigned int &quadIndex) const { return get(quadIndex, eta_list_); };
-		const double& zeta(const unsigned int &quadIndex) const { return get(quadIndex, zeta_list_); };
-		const double& weight(const unsigned int &quadIndex) const { return get(quadIndex, weight_list_); };
+		const Point parametric_point(const unsigned int &quad_index) const;
+		const double& xi(const unsigned int &quad_index) const { return get(quad_index, xi_list_); };
+		const double& eta(const unsigned int &quad_index) const { return get(quad_index, eta_list_); };
+		const double& zeta(const unsigned int &quad_index) const { return get(quad_index, zeta_list_); };
+		const double& weight(const unsigned int &quad_index) const { return get(quad_index, weight_list_); };
 
 	private:
-
+		/// The current quadrature type
+		QuadratureType type_;
+		/// The current integration order
+		unsigned int integration_order_;
 		/// The total number of integration points for the current quadrature rule
 		unsigned int n_quad_points_;
 		/// Each of these arrays will point to static memory
@@ -63,10 +72,10 @@ namespace simple_math
 		NewtonCotes3D nc3D;
 
 		/// Allows common error checks to be added or removed
-		inline const double& get(const unsigned int &quadIndex, const double* valArray) const {
+		inline const double& get(const unsigned int &quad_index, const double* valArray) const {
 			_UTIL_ASSERT(valArray == nullptr, "Tried to get an invalid value. Either Quadrature was not setup or the type is invalid.");
-			_UTIL_ASSERT(quadIndex >= n_quad_points_, "The quad point requested is out of bounds.");
-			return valArray[quadIndex];
+			_UTIL_ASSERT(quad_index >= n_quad_points_, "The quad point requested is out of bounds.");
+			return valArray[quad_index];
 		};
 	};
 

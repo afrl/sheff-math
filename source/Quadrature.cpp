@@ -11,6 +11,9 @@ namespace simple_math
 	{
 		reset();
 
+		type_ = qt;
+		integration_order_ = integrationOrder;
+
 		if (qt == QuadratureType::Gauss1D) {
 			xi_list_ = gauss.getAbscissae(integrationOrder);
 			weight_list_ = gauss.getWeights(integrationOrder);
@@ -75,6 +78,16 @@ namespace simple_math
 		eta_list_ = 0;
 		zeta_list_ = 0;
 		n_quad_points_ = 0;
+	}
+
+	const Point Quadrature::parametric_point(const unsigned int & quad_index) const
+	{
+		if (eta_list_ == nullptr)
+			return { xi(quad_index), 0, 0 };
+		else if (zeta_list_ == nullptr)
+			return { xi(quad_index), eta(quad_index), 0 };
+		else
+			return { xi(quad_index), eta(quad_index), zeta(quad_index) };
 	}
 
 }

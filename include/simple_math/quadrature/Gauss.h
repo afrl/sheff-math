@@ -7,10 +7,9 @@
 #endif
 #include <math.h>
 
-static const unsigned int MAX_GAUSS_ORDER = 20;
-
 namespace simple_math
 {
+	static const unsigned int MAX_GAUSS_ORDER = 20;
 
 	class Gauss
 	{
