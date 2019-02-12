@@ -4,8 +4,9 @@
 #define EIGEN_STACK_ALLOCATION_LIMIT 3686400
 #include "Eigen/Eigen"
 
+#include "Defines.h"
+
 #include <numeric>
-#include <array>
 
 namespace simple_math
 {
@@ -17,8 +18,6 @@ namespace simple_math
 	static constexpr int MAX_N_NODE_DOFS_PER_ELEMENT = MAX_N_NODES * MAX_N_DOFS_PER_NODE;
 	static constexpr int MAX_N_QUAD_DOFS_PER_ELEMENT = MAX_N_QUAD_POINTS * MAX_N_DOFS_PER_NODE;
 
-	using FloatType = double;
-	using Point = std::array<FloatType, 3>;
 	using Quaternion = Eigen::Quaternion<FloatType>;
 	using Vector3D = Eigen::Matrix<FloatType, 3, 1>;
 	using Matrix3D = Eigen::Matrix<FloatType, 3, 3>;

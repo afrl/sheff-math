@@ -86,18 +86,6 @@ namespace simple_math
 		/// performing additional_quaternion then the quaternion_to_modify
 		static void add_before(Quaternion & quaternion_to_modify, const Quaternion & additional_quaternion);
 
-		///////////////////
-		// Interpolation //
-		///////////////////
-
-		/// Calculate the rotation at a point given by applying Lagrange interpolation to
-		/// quaternion parameters and re-normalizing.  Note: this is not the most accurate method,
-		/// but it is cheap.  Other methods of interpolation should be considered later.
-		template<typename Container>
-		static void interpolate_rotation(
-			const simple_math::GeneralVector & shape_function_values,
-			const Container & nodal_quaternions);
-
 		/////////////////
 		// Information //
 		/////////////////
@@ -147,26 +135,5 @@ namespace simple_math
 		/// NOTE: TODO this needs to be cheked!!!
 		static bool get_321_euler_sequence_angles(const Quaternion & quaterion, std::vector<double> & angles);
 	};
-
-	//////////////////////////
-	// Template definitions //
-	//////////////////////////
-
-	template<typename Container>
-	inline void QuaternionHelpers::interpolate_rotation(const simple_math::GeneralVector & shape_function_values, const Container & nodal_quaternions)
-	{
-		const double w = x = y = z = 0.0;
-
-		for (int i = 0; i < shape_function_values.rows(); ++i) {
-			w += shape_function_values(i) * nodal_quaternions[i].w();
-			x += shape_function_values(i) * nodal_quaternions[i].x();
-			y += shape_function_values(i) * nodal_quaternions[i].y();
-			z += shape_function_values(i) * nodal_quaternions[i].z();
-		}
-
-		Quaternion interpolated_quaternion(w, x, y, z);
-		interpolated_quaternion.normalize();
-		return interpolated_quaternion;
-	}
 
 }
