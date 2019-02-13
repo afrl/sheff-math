@@ -58,6 +58,10 @@ namespace simple_math
 		Eigen::ColMajor, MAX_N_QUAD_POINTS, MAX_N_DOFS_PER_NODE>;
 	using QuadDofX3Matrix = Eigen::Matrix<FloatType, Eigen::Dynamic, 3,
 		Eigen::ColMajor, MAX_N_QUAD_DOFS_PER_ELEMENT>;
+	using VoigtXQuadMatrix = Eigen::Matrix<FloatType, 6, Eigen::Dynamic,
+		Eigen::ColMajor, 6, MAX_N_QUAD_POINTS>;
+	using QuadDofVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1,
+		Eigen::ColMajor, MAX_N_QUAD_DOFS_PER_ELEMENT>;
 
 	// Containers for matrices involving the number of nodes in the element
 	using NodeVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1,
