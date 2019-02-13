@@ -18,7 +18,7 @@ include(${CMAKE_SOURCE_DIR}/cmake/CommonInputChecks.cmake)
 ########################
 
 
-find_package(UTILITY CONFIG REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../utility/build" "${CMAKE_SOURCE_DIR}/../utility/install_dir")
+find_package(Utility CONFIG REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../utility/build" "${CMAKE_SOURCE_DIR}/../utility/install_dir")
 find_package(Eigen3 3.3.0 CONFIG REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../third_party/eigen/install_dir" "${CMAKE_SOURCE_DIR}/../eigen/install_dir")
 
 
@@ -58,7 +58,7 @@ target_link_libraries(simplemath PUBLIC Eigen3::Eigen)
 include(${CMAKE_SOURCE_DIR}/cmake/Utilities.cmake)
 assign_source_group("simple_math" ${SIMPLEMATH_HEADER_LIST})
 assign_source_group("simple_math" ${SIMPLEMATH_SOURCE_LIST})
-assign_source_group_utility()
+assign_source_group_Utility()
 
 
 #################################
