@@ -1,7 +1,7 @@
 #pragma once
 
 #define EIGEN_MAX_CPP_VER 11
-#define EIGEN_STACK_ALLOCATION_LIMIT 3686400
+//#define EIGEN_STACK_ALLOCATION_LIMIT 460800
 #include "Eigen/Eigen"
 
 #include "Defines.h"
@@ -13,8 +13,8 @@ namespace simple_math
 	// Constants that specify the limits of various quantities within an element
 	// that in turn are used to create fixed Eigen matrix types
 	static constexpr int MAX_N_NODES = 20;
-	static constexpr int MAX_N_DOFS_PER_NODE = 12;
-	static constexpr int MAX_N_QUAD_POINTS = 20;
+	static constexpr int MAX_N_DOFS_PER_NODE = 4;
+	static constexpr int MAX_N_QUAD_POINTS = 27;
 	static constexpr int MAX_N_NODE_DOFS_PER_ELEMENT = MAX_N_NODES * MAX_N_DOFS_PER_NODE;
 	static constexpr int MAX_N_QUAD_DOFS_PER_ELEMENT = MAX_N_QUAD_POINTS * MAX_N_DOFS_PER_NODE;
 
@@ -41,7 +41,7 @@ namespace simple_math
 		Eigen::ColMajor, 6, MAX_N_NODE_DOFS_PER_ELEMENT>;
 	/// A matrix with both dimensions larger than the amount of DoF's expected for a single element
 	using ElementDofXDofMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic,
-		Eigen::ColMajor, MAX_N_NODE_DOFS_PER_ELEMENT, MAX_N_NODE_DOFS_PER_ELEMENT>;
+		Eigen::ColMajor, 96, 96>;
 
 	// Containers for matrices involving the number of quad points
 	using QuadVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1,
