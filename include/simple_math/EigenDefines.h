@@ -75,4 +75,30 @@ namespace simple_math
 
 	using DofX3Matrix = Eigen::Matrix<FloatType, Eigen::Dynamic, 3,
 		Eigen::ColMajor, MAX_N_DOFS_PER_NODE>;
+
+
+	/// A
+	template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
+	class HeapLimitedMatrix
+		: public Eigen::Map<Eigen::Matrix<_Scalar, EIgen::Dynamic, Eigen::Dynamic, _Options>>
+	{
+		HeapLimitedMatrix()
+			: underlying_array_(new _Scalar[_MaxRows * _MaxCols]),
+			Eigen::Map<Eigen::Matrix<_Scalar, Eigen::Dynamic, Eigen::Dynamic, _Options>>(&underlying_array_[0], _MaxRows, _MaxCols)
+		{
+		}
+
+		~HeapLimitedMatrix()
+		{
+			delete[] underlying_array_;
+		}
+
+		void resize(int rows, int cols)
+		{
+			new (this) Eigen::Map<Eigen::Matrix<_Scalar, Eigen::Dynamic, Eigen::Dynamic, _Options>>(&underlying_array_[0], rows, cols);
+		}
+
+	private:
+		_Scalar underlying_array_;
+	};
 };

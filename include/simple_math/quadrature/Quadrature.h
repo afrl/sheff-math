@@ -73,8 +73,8 @@ namespace simple_math
 
 		/// Allows common error checks to be added or removed
 		inline const double& get(const unsigned int &quad_index, const double* valArray) const {
-			_UTIL_ASSERT(valArray == nullptr, "Tried to get an invalid value. Either Quadrature was not setup or the type is invalid.");
-			_UTIL_ASSERT(quad_index >= n_quad_points_, "The quad point requested is out of bounds.");
+			_UTIL_ASSERT(valArray != nullptr, "Tried to get an invalid value. Either Quadrature was not setup or the type is invalid.");
+			_UTIL_ASSERT(quad_index < n_quad_points_, "The quad point requested is out of bounds.");
 			return valArray[quad_index];
 		};
 	};
