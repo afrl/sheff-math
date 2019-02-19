@@ -1,23 +1,14 @@
 #pragma once
 
-#define EIGEN_MAX_CPP_VER 11
-//#define EIGEN_STACK_ALLOCATION_LIMIT 460800
-#include "Eigen/Eigen"
-
 #include "Defines.h"
+#include "HeapPreallocatedMatrix.h"
+
+#include "utility/Exceptions.h"
 
 #include <numeric>
 
 namespace simple_math
 {
-	// Constants that specify the limits of various quantities within an element
-	// that in turn are used to create fixed Eigen matrix types
-	static constexpr int MAX_N_NODES = 20;
-	static constexpr int MAX_N_DOFS_PER_NODE = 4;
-	static constexpr int MAX_N_QUAD_POINTS = 27;
-	static constexpr int MAX_N_NODE_DOFS_PER_ELEMENT = MAX_N_NODES * MAX_N_DOFS_PER_NODE;
-	static constexpr int MAX_N_QUAD_DOFS_PER_ELEMENT = MAX_N_QUAD_POINTS * MAX_N_DOFS_PER_NODE;
-
 	using Quaternion = Eigen::Quaternion<FloatType>;
 	using Vector3D = Eigen::Matrix<FloatType, 3, 1>;
 	using Matrix3D = Eigen::Matrix<FloatType, 3, 3>;
@@ -26,22 +17,34 @@ namespace simple_math
 	using GeneralVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1>;
 	using GeneralMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic>;
 
-	// Containers for matrices involing the max # of DoF's per an element (used for element
-	// matrices/vectors that will be assembled into the global system)
-	/// A vector with a fixed size that is larger than the connectivity expected for any element.
+
+	// Note: after benchmarking, it appears that memory allocation is neglible compared
+	// to the time required to compute quantities in the workspace (as I should have anticipated).
+	// Consequently, it is not useful to specialize fixed size arrays.  It provides less than
+	// 5% faster performance, but at the cost of code clarity and fighting stack allocation
+	// limits.  So, it does not appear worthwhile.
+
+	/* depreciated
+
+	// Constants that specify the limits of various quantities within an element
+	// that in turn are used to create fixed Eigen matrix types
+	static constexpr int MAX_N_NODES = 27;
+	static constexpr int MAX_N_DOFS_PER_NODE = 15;
+	static constexpr int MAX_N_QUAD_POINTS = 27;
+	static constexpr int MAX_N_NODE_DOFS_PER_ELEMENT = MAX_N_NODES * MAX_N_DOFS_PER_NODE;
+	static constexpr int MAX_N_QUAD_DOFS_PER_ELEMENT = MAX_N_QUAD_POINTS * MAX_N_DOFS_PER_NODE;
+	
+	// Containers for matrices involving the number of DoF's in an element points
 	using ElementDofVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1,
 		Eigen::ColMajor, MAX_N_NODE_DOFS_PER_ELEMENT>;
-	/// A matrix with a fixed size that is larger than the connectivity expected for any element
-	/// and 3 columns for spatial derivatives.
-	using ElementDofX3Matrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic,
-		Eigen::ColMajor, MAX_N_NODE_DOFS_PER_ELEMENT, 3>;
-	using ElementDofX6Matrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic,
-		Eigen::ColMajor, MAX_N_NODE_DOFS_PER_ELEMENT, 6>;
-	using Element6XDofMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic,
-		Eigen::ColMajor, 6, MAX_N_NODE_DOFS_PER_ELEMENT>;
-	/// A matrix with both dimensions larger than the amount of DoF's expected for a single element
-	using ElementDofXDofMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic,
-		Eigen::ColMajor, 96, 96>;
+	using ElementDofX3Matrix = HeapPreallocatedMatrix < FloatType,
+		MAX_N_NODE_DOFS_PER_ELEMENT, 3>;
+	using ElementDofX6Matrix = HeapPreallocatedMatrix < FloatType,
+		MAX_N_NODE_DOFS_PER_ELEMENT, 6>;
+	using Element6XDofMatrix = HeapPreallocatedMatrix < FloatType,
+		6, MAX_N_NODE_DOFS_PER_ELEMENT>;
+	using ElementDofXDofMatrix = HeapPreallocatedMatrix<FloatType,
+		MAX_N_NODE_DOFS_PER_ELEMENT, MAX_N_NODE_DOFS_PER_ELEMENT>;
 
 	// Containers for matrices involving the number of quad points
 	using QuadVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1,
@@ -76,29 +79,5 @@ namespace simple_math
 	using DofX3Matrix = Eigen::Matrix<FloatType, Eigen::Dynamic, 3,
 		Eigen::ColMajor, MAX_N_DOFS_PER_NODE>;
 
-
-	/// A
-	template<typename _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
-	class HeapLimitedMatrix
-		: public Eigen::Map<Eigen::Matrix<_Scalar, EIgen::Dynamic, Eigen::Dynamic, _Options>>
-	{
-		HeapLimitedMatrix()
-			: underlying_array_(new _Scalar[_MaxRows * _MaxCols]),
-			Eigen::Map<Eigen::Matrix<_Scalar, Eigen::Dynamic, Eigen::Dynamic, _Options>>(&underlying_array_[0], _MaxRows, _MaxCols)
-		{
-		}
-
-		~HeapLimitedMatrix()
-		{
-			delete[] underlying_array_;
-		}
-
-		void resize(int rows, int cols)
-		{
-			new (this) Eigen::Map<Eigen::Matrix<_Scalar, Eigen::Dynamic, Eigen::Dynamic, _Options>>(&underlying_array_[0], rows, cols);
-		}
-
-	private:
-		_Scalar underlying_array_;
-	};
+	*/
 };
