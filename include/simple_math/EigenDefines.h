@@ -2,6 +2,8 @@
 
 #include "Defines.h"
 #include "HeapPreallocatedMatrix.h"
+#include "BlockMatrix.h"
+#include "BlockVector.h"
 
 #include "utility/Exceptions.h"
 
@@ -16,7 +18,8 @@ namespace simple_math
 	using VoigtMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, 0, 6, 6>;
 	using GeneralVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1>;
 	using GeneralMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic>;
-
+	using EigenBlockVector = BlockVector<GeneralVector>;
+	using EigenBlockMatrix = BlockMatrix<GeneralMatrix>;
 
 	// Note: after benchmarking, it appears that memory allocation is neglible compared
 	// to the time required to compute quantities in the workspace (as I should have anticipated).
