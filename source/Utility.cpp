@@ -1,4 +1,3 @@
-#pragma once
 
 #include "simple_math/Utility.h"
 
