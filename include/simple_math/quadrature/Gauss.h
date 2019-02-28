@@ -17,8 +17,8 @@ namespace simple_math
 		/// Default constructor just iniailizes the arrays of pointers to be null
 		Gauss() {
 			for (unsigned int i = 0; i < MAX_GAUSS_ORDER; i++) {
-				abscissae[i] = 0;
-				weights[i] = 0;
+				abscissae[i] = nullptr;
+				weights[i] = nullptr;
 				calculated[i] = false;
 			}
 		};

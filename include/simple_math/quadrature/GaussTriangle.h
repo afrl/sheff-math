@@ -11,9 +11,9 @@ namespace simple_math
 		GaussTriangle() {
 			for (unsigned int i = 0; i < MAX_GAUSS_TRI_ORDER; i++) {
 				length[i] = 0;
-				xi[i] = 0;
-				eta[i] = 0;
-				weight[i] = 0;
+				xi[i] = nullptr;
+				eta[i] = nullptr;
+				weight[i] = nullptr;
 				calculated[i] = false;
 			}
 		};

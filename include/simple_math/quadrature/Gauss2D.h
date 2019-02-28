@@ -13,9 +13,9 @@ namespace simple_math
 
 		Gauss2D() {
 			for (unsigned int i = 0; i < MAX_GAUSS_ORDER; i++) {
-				xis[i] = 0;
-				etas[i] = 0;
-				weights[i] = 0;
+				xis[i] = nullptr;
+				etas[i] = nullptr;
+				weights[i] = nullptr;
 				calculated[i] = false;
 			}
 		};

@@ -13,7 +13,7 @@ namespace simple_math
 
 		Gauss3D() : Gauss2D() {
 			for (unsigned int i = 0; i < MAX_GAUSS_ORDER; i++) {
-				zetas[i] = 0;
+				zetas[i] = nullptr;
 			}
 		};
 

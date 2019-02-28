@@ -9,7 +9,7 @@ namespace simple_math
 	public:
 		GaussTetrahedron() : GaussTriangle() {
 			for (unsigned int i = 0; i < MAX_GAUSS_TRI_ORDER; i++) {
-				zeta[i] = 0;
+				zeta[i] = nullptr;
 			}
 		}
 

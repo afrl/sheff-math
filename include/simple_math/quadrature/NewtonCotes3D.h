@@ -9,7 +9,7 @@ namespace simple_math
 	public:
 		NewtonCotes3D() : NewtonCotes2D() {
 			for (unsigned int i = 0; i < MAX_NC_ORDER; i++) {
-				zetas[i] = 0;
+				zetas[i] = nullptr;
 			}
 		};
 
