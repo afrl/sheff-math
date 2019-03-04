@@ -17,6 +17,7 @@ namespace simple_math
 	{
 	public:
 		BlockVector(const unsigned int n_blocks);
+		BlockVector(BlockVector&& other);
 
 		/// Set the i-th block by copy assignment
 		void set_block(const unsigned int i, const VectorType & v);
@@ -47,6 +48,12 @@ namespace simple_math
 	inline BlockVector<VectorType>::BlockVector(const unsigned int n_blocks)
 	{
 		blocks_.resize(n_blocks);
+	}
+
+	template<typename VectorType>
+	inline BlockVector<VectorType>::BlockVector(BlockVector && other)
+	{
+		blocks_.swap(other.blocks_);
 	}
 
 	template<typename VectorType>
