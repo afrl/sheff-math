@@ -9,8 +9,8 @@ namespace simple_math
 	public:
 		NewtonCotes1D() {
 			for (unsigned int i = 0; i < MAX_NC_ORDER; i++) {
-				xis[i] = 0;
-				weights[i] = 0;
+				xis[i] = nullptr;
+				weights[i] = nullptr;
 				calculated[i] = false;
 			}
 		};

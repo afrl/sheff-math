@@ -10,4 +10,26 @@ namespace simple_math
 	/// Returns an object that acts like a Vector3D without copying the memory
 	/// from the given point.  Provides the Eigen interface for a Point.
 	Eigen::Map<const Vector3D> point_as_vector(const Point& p);
+
+    /// Convert vector to point
+    static Point to_point(const Vector3D & v)
+    {
+        return { v[0], v[1], v[2] };
+    }
+
+    template <typename T> inline constexpr
+        int8_t sign(T x, std::false_type is_signed) {
+        return T(0) < x;
+    }
+
+    template <typename T> inline constexpr
+        int8_t sign(T x, std::true_type is_signed) {
+        return (T(0) < x) - (x < T(0));
+    }
+
+    /// Returns the sign of a value (-1, 0, 1)
+    template <typename T> inline constexpr
+        int8_t sign(T x) {
+        return sign(x, std::is_signed<T>());
+    }
 };
