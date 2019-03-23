@@ -17,7 +17,7 @@ namespace simple_math
 	using VoigtVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1, 0, 6>;
 	using VoigtMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, 0, 6, 6>;
 	using GeneralVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1>;
-	using GeneralMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic>;
+	using GeneralMatrix = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 	using EigenBlockVector = BlockVector<GeneralVector>;
 	using EigenBlockMatrix = BlockMatrix<GeneralMatrix>;
 
@@ -36,7 +36,7 @@ namespace simple_math
 	static constexpr int MAX_N_QUAD_POINTS = 27;
 	static constexpr int MAX_N_NODE_DOFS_PER_ELEMENT = MAX_N_NODES * MAX_N_DOFS_PER_NODE;
 	static constexpr int MAX_N_QUAD_DOFS_PER_ELEMENT = MAX_N_QUAD_POINTS * MAX_N_DOFS_PER_NODE;
-	
+
 	// Containers for matrices involving the number of DoF's in an element points
 	using ElementDofVector = Eigen::Matrix<FloatType, Eigen::Dynamic, 1,
 		Eigen::ColMajor, MAX_N_NODE_DOFS_PER_ELEMENT>;
