@@ -32,4 +32,24 @@ namespace simple_math
         int8_t sign(T x) {
         return sign(x, std::is_signed<T>());
     }
+
+    template<typename ComplexVector>
+    static std::pair<typename ComplexVector::value_type, typename ComplexVector::Index>
+        find_max_real_part(const ComplexVector & vector)
+    {
+        typename ComplexVector::Index max_index = 0;
+        typename ComplexVector::value_type max_value = *vector.begin();
+
+        typename ComplexVector::Index curr_index = 0;
+        for (auto value : vector)
+        {
+            if (value.real() > max_value.real())
+            {
+                max_index = curr_index;
+            }
+            curr_index++;
+        }
+
+        return { max_value, max_index };
+    }
 };
