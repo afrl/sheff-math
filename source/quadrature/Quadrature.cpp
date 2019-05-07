@@ -34,22 +34,22 @@ namespace simple_math
 			weight_list_ = gauss3D.get_weights(integration_order);
 			n_quad_points_ = integration_order * integration_order * integration_order;
         case QuadratureType::Gauss2DTriangle:
-			xi_list_ = gaussTriangle2D.getXis(integration_order);
-			eta_list_ = gaussTriangle2D.getEtas(integration_order);
-			weight_list_ = gaussTriangle2D.getWeights(integration_order);
-			n_quad_points_ = gaussTriangle2D.getNumQuads(integration_order);
+			xi_list_ = gaussTriangle2D.get_xis(integration_order);
+			eta_list_ = gaussTriangle2D.get_etas(integration_order);
+			weight_list_ = gaussTriangle2D.get_weights(integration_order);
+			n_quad_points_ = gaussTriangle2D.get_n_quads(integration_order);
         case QuadratureType::Gauss3DTet:
-			xi_list_ = gaussTetrahedron3D.getXis(integration_order);
-			eta_list_ = gaussTetrahedron3D.getEtas(integration_order);
-			zeta_list_ = gaussTetrahedron3D.getZetas(integration_order);
-			weight_list_ = gaussTetrahedron3D.getWeights(integration_order);
-			n_quad_points_ = gaussTetrahedron3D.getNumQuads(integration_order);
+			xi_list_ = gaussTetrahedron3D.get_xis(integration_order);
+			eta_list_ = gaussTetrahedron3D.get_etas(integration_order);
+			zeta_list_ = gaussTetrahedron3D.get_zetas(integration_order);
+			weight_list_ = gaussTetrahedron3D.get_weights(integration_order);
+			n_quad_points_ = gaussTetrahedron3D.get_n_quads(integration_order);
         case QuadratureType::Gauss3DWedge:
-			xi_list_ = gaussWedge3D.getXis(integration_order);
-			eta_list_ = gaussWedge3D.getEtas(integration_order);
-			zeta_list_ = gaussWedge3D.getZetas(integration_order);
-			weight_list_ = gaussWedge3D.getWeights(integration_order);
-			n_quad_points_ = gaussWedge3D.getNumQuads(integration_order);
+			xi_list_ = gaussWedge3D.get_xis(integration_order);
+			eta_list_ = gaussWedge3D.get_etas(integration_order);
+			zeta_list_ = gaussWedge3D.get_zetas(integration_order);
+			weight_list_ = gaussWedge3D.get_weights(integration_order);
+			n_quad_points_ = gaussWedge3D.get_n_quads(integration_order);
         case QuadratureType::NewtonCotes1D:
             nc1D.setup(integration_order);
 			xi_list_ = nc1D.get_xis(integration_order);
