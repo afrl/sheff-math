@@ -23,7 +23,7 @@ include(${CMAKE_SOURCE_DIR}/cmake/CommonInputChecks.cmake)
 
 
 find_package(Utility CONFIG REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../utility/build" "${CMAKE_SOURCE_DIR}/../utility/install_dir")
-find_package(Eigen3 3.3.0 CONFIG REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../third_party/eigen/install_dir" "${CMAKE_SOURCE_DIR}/../eigen/install_dir")
+find_package(Eigen3 3.3.0 CONFIG REQUIRED HINTS "${CMAKE_SOURCE_DIR}/../third_party/eigen_install_dir" "${CMAKE_SOURCE_DIR}/../eigen/install_dir")
 
 
 ################################

@@ -2,6 +2,8 @@
 
 #include "EigenDefines.h"
 
+#include "utility/Range.h"
+
 namespace simple_math
 {
 	/// Returns if a < b while taking into account a numerical tolerance
@@ -38,14 +40,15 @@ namespace simple_math
         find_max_real_part(const ComplexVector & vector)
     {
         typename ComplexVector::Index max_index = 0;
-        typename ComplexVector::value_type max_value = *vector.begin();
+        typename ComplexVector::value_type max_value = vector[0];
 
         typename ComplexVector::Index curr_index = 0;
-        for (auto value : vector)
+        for (auto i : utility::range_from_zero(vector.size()))
         {
-            if (value.real() > max_value.real())
+            if (vector[i].real() > max_value.real())
             {
                 max_index = curr_index;
+                max_value = vector[i];
             }
             curr_index++;
         }
