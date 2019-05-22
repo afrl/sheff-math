@@ -1,5 +1,7 @@
 #include "simple_math/quadrature/GaussWedge.h"
 
+#include <math.h>
+
 namespace simple_math
 {
     void GaussWedge::setup(const unsigned int integration_order)
