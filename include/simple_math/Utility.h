@@ -19,6 +19,13 @@ namespace simple_math
         return { v[0], v[1], v[2] };
     }
 
+    static std::string to_string(const simple_math::Point& point)
+    {
+        return "(" + std::to_string(point[0])
+            + ", " + std::to_string(point[1])
+            + ", " + std::to_string(point[2]) + ")";
+    }
+
     template <typename T> inline constexpr
         int8_t sign(T x, std::false_type is_signed) {
         return T(0) < x;
