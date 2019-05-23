@@ -1,5 +1,7 @@
 #include "simple_math/quadrature/GaussTetrahedron.h"
 
+#include <math.h>
+
 namespace simple_math
 {
     GaussTetrahedron::GaussTetrahedron() : GaussTriangle()
