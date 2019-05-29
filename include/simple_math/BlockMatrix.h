@@ -47,6 +47,8 @@ namespace simple_math
 		const unsigned int get_n_blocks() const;
 		/// Get the number of rows
 		const unsigned int get_n_rows() const;
+        /// Get a string representation of the matrix for debugging purposes
+        std::string str() const;
 
 	private:
 		std::vector<std::unique_ptr<MatrixType>> blocks_;
@@ -136,6 +138,57 @@ namespace simple_math
 	{
 		return n_rows_;
 	}
+
+    template<typename MatrixType>
+    inline std::string BlockMatrix<MatrixType>::str() const
+    {
+        typename MatrixType::Index n_rows_per_block = 0;
+        typename MatrixType::Index n_cols_per_block = 0;
+        for (auto& block : blocks_)
+        {
+            if (block != nullptr)
+            {
+                if (n_rows_per_block == 0)
+                {
+                    n_rows_per_block = block->rows();
+                    n_cols_per_block = block->cols();
+                }
+                else if (block->rows() != n_rows_per_block
+                    || block->cols() != n_cols_per_block)
+                {
+                    throw _UTIL_MSG_EXCEPT_C("Some of the blocks did not have the same size.  To print a block matrix as a string, this property is required.");
+                }
+            }
+        }
+
+        std::stringstream ss;
+        for (auto i : utility::range_from_zero(n_rows_))
+        {
+            for (auto row_in_block : utility::range_from_zero(n_rows_per_block))
+            {
+                ss << " ";
+                for (auto j : utility::range_from_zero(n_rows_))
+                {
+                    const auto block_i = get_unraveled_index(i, j);
+                    auto& block = blocks_[block_i];
+                    if (block != nullptr)
+                    {
+                        ss << block->row(row_in_block);
+                    }
+                    else
+                    {
+                        for (auto col_in_block : utility::range_from_zero(n_cols_per_block))
+                        {
+                            ss << "            0";
+                        }
+                    }
+                    ss << " ";
+                }
+                ss << "\n";
+            }
+        }
+        return ss.str();
+    }
 
 	template<typename MatrixType>
 	inline const unsigned int BlockMatrix<MatrixType>::get_unraveled_index(const unsigned int i, const unsigned int j) const
