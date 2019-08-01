@@ -71,6 +71,33 @@ namespace simple_math
 		}
 	}
 
+    void Quadrature::setup(const PersistentQuadrature1D& persistent_quadrature)
+    {
+        xi_list_ = persistent_quadrature.xis_;
+        eta_list_ = nullptr;
+        zeta_list_ = nullptr;
+        weight_list_ = persistent_quadrature.weights_;
+        n_quad_points_ = persistent_quadrature.n_quad_points;
+    }
+
+    void Quadrature::setup(const PersistentQuadrature2D& persistent_quadrature)
+    {
+        xi_list_ = persistent_quadrature.xis_;
+        eta_list_ = persistent_quadrature.etas_;
+        zeta_list_ = nullptr;
+        weight_list_ = persistent_quadrature.weights_;
+        n_quad_points_ = persistent_quadrature.n_quad_points;
+    }
+
+    void Quadrature::setup(const PersistentQuadrature3D& persistent_quadrature)
+    {
+        xi_list_ = persistent_quadrature.xis_;
+        eta_list_ = persistent_quadrature.etas_;
+        zeta_list_ = persistent_quadrature.zetas_;
+        weight_list_ = persistent_quadrature.weights_;
+        n_quad_points_ = persistent_quadrature.n_quad_points;
+    }
+
 	void Quadrature::reset()
 	{
 		xi_list_ = nullptr;

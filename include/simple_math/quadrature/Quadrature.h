@@ -11,6 +11,7 @@
 #include "NewtonCotes1D.h"
 #include "NewtonCotes2D.h"
 #include "NewtonCotes3D.h"
+#include "PersistentQuadratureData.h"
 
 namespace simple_math
 {
@@ -35,6 +36,9 @@ namespace simple_math
 		Quadrature();
 
 		void setup(const QuadratureType &qt, const unsigned int integration_order);
+        void setup(const PersistentQuadrature1D& persistent_quadrature);
+        void setup(const PersistentQuadrature2D& persistent_quadrature);
+        void setup(const PersistentQuadrature3D& persistent_quadrature);
 		void reset();
 
 		const QuadratureType& get_type() const { return type_; }

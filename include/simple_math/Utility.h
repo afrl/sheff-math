@@ -8,6 +8,13 @@ namespace simple_math
 {
 	/// Returns if a < b while taking into account a numerical tolerance
 	bool compare_points(const Point& a, const Point& b, const double tolerance);
+
+    static double distance(const Point& a, const Point& b)
+    {
+        return sqrt((a[0] - b[0]) * (a[0] - b[0])
+            + (a[1] - b[1]) * (a[1] - b[1])
+            + (a[2] - b[2]) * (a[2] - b[2]));
+    }
 	
 	/// Returns an object that acts like a Vector3D without copying the memory
 	/// from the given point.  Provides the Eigen interface for a Point.

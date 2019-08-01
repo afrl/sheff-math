@@ -18,7 +18,7 @@ namespace simple_math
     {
     public:
         BlockMatrix(const unsigned int n_rows);
-        BlockMatrix(BlockMatrix&& other);
+        BlockMatrix(BlockMatrix&& other) noexcept;
 
         /// Set the (i, j) block by copy assignment
         void set_block(const unsigned int i, const unsigned int j,
@@ -66,11 +66,11 @@ namespace simple_math
     inline BlockMatrix<MatrixType>::BlockMatrix(const unsigned int n_rows)
         : n_rows_(n_rows)
     {
-        blocks_.resize(n_rows * n_rows);
+        blocks_.resize(static_cast<std::size_t>(n_rows) * n_rows);
     }
 
     template<typename MatrixType>
-    inline simple_math::BlockMatrix<MatrixType>::BlockMatrix(BlockMatrix && other)
+    inline simple_math::BlockMatrix<MatrixType>::BlockMatrix(BlockMatrix && other) noexcept
         : n_rows_(other.n_rows_)
     {
         blocks_.swap(other.blocks_);
