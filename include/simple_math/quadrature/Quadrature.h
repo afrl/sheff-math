@@ -26,8 +26,22 @@ namespace simple_math
 		NewtonCotes1D, ///< Evenly spaced quad-points from -1 to 1 (order will refer to # of quad points)
 		NewtonCotes2D, ///< See NewtonCotes1D
 		NewtonCotes3D, ///< See NewtonCotes1D
+        RuntimeGenerated1D, ///< Relies on the element storing a PersistentQuadratureScheme1D object
+        RuntimeGenerated2D, ///< Relies on the element storing a PersistentQuadratureScheme2D object
+        RuntimeGenerated3D, ///< Relies on the element storing a PersistentQuadratureScheme3D object
 		UNKNOWN ///< Must be last! Used by Mapping class to know the last QuadratureType.
 	};
+
+    using QuadratureOrder = int8_t;
+    using QuadratureIndex = int8_t;
+
+    /// Stores all of the information needed to describe a quadrature scheme.
+    struct QuadratureScheme
+    {
+        QuadratureType type;
+        QuadratureOrder integration_order;
+        std::unique_ptr<PersistentQuadrature> run_time_generated_quadrature;
+    };
 
 	class Quadrature
 	{
@@ -35,28 +49,25 @@ namespace simple_math
 		/// Constructor creates all the quadrature objects
 		Quadrature();
 
-		void setup(const QuadratureType &qt, const unsigned int integration_order);
-        void setup(const PersistentQuadrature1D& persistent_quadrature);
-        void setup(const PersistentQuadrature2D& persistent_quadrature);
-        void setup(const PersistentQuadrature3D& persistent_quadrature);
+		void setup(const QuadratureScheme& quadrature_scheme);
 		void reset();
 
 		const QuadratureType& get_type() const { return type_; }
-		const unsigned int& get_integration_order() const { return integration_order_; }
-		const unsigned int& n_quad_points() const { return n_quad_points_; }
-		const Point parametric_point(const unsigned int &quad_index) const;
-		const double& xi(const unsigned int &quad_index) const { return get(quad_index, xi_list_); };
-		const double& eta(const unsigned int &quad_index) const { return get(quad_index, eta_list_); };
-		const double& zeta(const unsigned int &quad_index) const { return get(quad_index, zeta_list_); };
-		const double& weight(const unsigned int &quad_index) const { return get(quad_index, weight_list_); };
+		const QuadratureOrder& get_integration_order() const { return integration_order_; }
+		const QuadratureIndex& n_quad_points() const { return n_quad_points_; }
+		const Point parametric_point(const QuadratureIndex &quad_index) const;
+		const double& xi(const QuadratureIndex &quad_index) const { return get(quad_index, xi_list_); };
+		const double& eta(const QuadratureIndex &quad_index) const { return get(quad_index, eta_list_); };
+		const double& zeta(const QuadratureIndex &quad_index) const { return get(quad_index, zeta_list_); };
+		const double& weight(const QuadratureIndex &quad_index) const { return get(quad_index, weight_list_); };
 
 	private:
 		/// The current quadrature type
 		QuadratureType type_;
 		/// The current integration order
-		unsigned int integration_order_;
+        QuadratureOrder integration_order_;
 		/// The total number of integration points for the current quadrature rule
-		unsigned int n_quad_points_;
+		QuadratureIndex n_quad_points_;
 		/// Each of these arrays will point to static memory
 		const double *xi_list_, *eta_list_, *zeta_list_, *weight_list_;
 
@@ -76,7 +87,7 @@ namespace simple_math
 		NewtonCotes3D nc3D;
 
 		/// Allows common error checks to be added or removed
-		inline const double& get(const unsigned int &quad_index, const double* valArray) const {
+		inline const double& get(const QuadratureIndex &quad_index, const double* valArray) const {
 			_UTIL_ASSERT(valArray != nullptr, "Tried to get an invalid value. Either Quadrature was not setup or the type is invalid.");
 			_UTIL_ASSERT(quad_index < n_quad_points_, "The quad point requested is out of bounds.");
 			return valArray[quad_index];

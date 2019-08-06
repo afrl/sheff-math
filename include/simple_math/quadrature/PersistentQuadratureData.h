@@ -32,6 +32,17 @@ namespace simple_math
             xis_ = new double[n_quad_points_];
             weights_ = new double[n_quad_points_];
         }
+        PersistentQuadrature1D(PersistentQuadrature1D&& other) noexcept
+        {
+            n_quad_points_ = other.n_quad_points_;
+            xis_ = other.xis_;
+            weights_ = other.weights_;
+
+            other.n_quad_points_ = 0;
+            other.xis_ = nullptr;
+            other.weights_ = nullptr;
+        }
+        PersistentQuadrature1D(const PersistentQuadrature1D& other) = delete;
 
         virtual ~PersistentQuadrature1D()
         {
@@ -42,6 +53,11 @@ namespace simple_math
         void set_quad_point(const unsigned int index, const double xi)
         {
             xis_[index] = xi;
+        }
+
+        void set_quad_weight(const unsigned int index, const double weight)
+        {
+            weights_[index] = weight;
         }
 
         /// Performs a simple check to ensure all the weights are in the range [0,1]
@@ -80,6 +96,19 @@ namespace simple_math
             etas_ = new double[n_quad_points_];
             weights_ = new double[n_quad_points_];
         }
+        PersistentQuadrature2D(PersistentQuadrature2D&& other) noexcept
+        {
+            n_quad_points_ = other.n_quad_points_;
+            xis_ = other.xis_;
+            etas_ = other.etas_;
+            weights_ = other.weights_;
+
+            other.n_quad_points_ = 0;
+            other.xis_ = nullptr;
+            other.etas_ = nullptr;
+            other.weights_ = nullptr;
+        }
+        PersistentQuadrature2D(const PersistentQuadrature2D& other) = delete;
 
         ~PersistentQuadrature2D()
         {
@@ -92,6 +121,11 @@ namespace simple_math
         {
             xis_[index] = xi;
             etas_[index] = eta;
+        }
+
+        void set_quad_weight(const unsigned int index, const double weight)
+        {
+            weights_[index] = weight;
         }
 
         /// Performs a simple check to ensure all the weights are in the range [0,1]
@@ -135,6 +169,21 @@ namespace simple_math
             zetas_ = new double[n_quad_points_];
             weights_ = new double[n_quad_points_];
         }
+        PersistentQuadrature3D(PersistentQuadrature3D&& other) noexcept
+        {
+            n_quad_points_ = other.n_quad_points_;
+            xis_ = other.xis_;
+            etas_ = other.etas_;
+            zetas_ = other.zetas_;
+            weights_ = other.weights_;
+
+            other.n_quad_points_ = 0;
+            other.xis_ = nullptr;
+            other.etas_ = nullptr;
+            other.zetas_ = nullptr;
+            other.weights_ = nullptr;
+        }
+        PersistentQuadrature3D(const PersistentQuadrature3D& other) = delete;
 
         ~PersistentQuadrature3D()
         {
@@ -144,11 +193,38 @@ namespace simple_math
             if (weights_) delete[] weights_;
         }
 
+        void operator=(PersistentQuadrature3D&& other) noexcept
+        {
+            std::swap(n_quad_points_, other.n_quad_points_);
+            std::swap(xis_, other.xis_);
+            std::swap(etas_, other.etas_);
+            std::swap(zetas_, other.zetas_);
+            std::swap(weights_, other.weights_);
+        }
+
+        const unsigned int n_quad_points() const
+        {
+            return n_quad_points_;
+        }
+
         void set_quad_point(const unsigned int index, const double xi, const double eta, const double zeta)
         {
             xis_[index] = xi;
             etas_[index] = eta;
             zetas_[index] = zeta;
+        }
+
+        void set_quad_weight(const unsigned int index, const double weight)
+        {
+            weights_[index] = weight;
+        }
+
+        void multiply_all_weights(const double factor_to_multiply)
+        {
+            for (unsigned int i = 0; i < n_quad_points_; i++)
+            {
+                weights_[i] *= factor_to_multiply;
+            }
         }
 
         /// Performs a simple check to ensure all the weights are in the range [0,1]
