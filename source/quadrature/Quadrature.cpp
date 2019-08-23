@@ -77,7 +77,7 @@ namespace simple_math
         eta_list_ = nullptr;
         zeta_list_ = nullptr;
         weight_list_ = persistent_quadrature.weights_;
-        n_quad_points_ = persistent_quadrature.n_quad_points;
+        n_quad_points_ = persistent_quadrature.n_quad_points_;
     }
 
     void Quadrature::setup(const PersistentQuadrature2D& persistent_quadrature)
@@ -86,7 +86,7 @@ namespace simple_math
         eta_list_ = persistent_quadrature.etas_;
         zeta_list_ = nullptr;
         weight_list_ = persistent_quadrature.weights_;
-        n_quad_points_ = persistent_quadrature.n_quad_points;
+        n_quad_points_ = persistent_quadrature.n_quad_points_;
     }
 
     void Quadrature::setup(const PersistentQuadrature3D& persistent_quadrature)
@@ -95,7 +95,7 @@ namespace simple_math
         eta_list_ = persistent_quadrature.etas_;
         zeta_list_ = persistent_quadrature.zetas_;
         weight_list_ = persistent_quadrature.weights_;
-        n_quad_points_ = persistent_quadrature.n_quad_points;
+        n_quad_points_ = persistent_quadrature.n_quad_points_;
     }
 
 	void Quadrature::reset()
