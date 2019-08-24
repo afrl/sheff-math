@@ -37,12 +37,14 @@ namespace simple_math
 			n_quad_points_ = integration_order_ * integration_order_ * integration_order_;
             break;
         case QuadratureType::Gauss2DTriangle:
+            gaussTriangle2D.setup(integration_order_);
 			xi_list_ = gaussTriangle2D.get_xis(integration_order_);
 			eta_list_ = gaussTriangle2D.get_etas(integration_order_);
 			weight_list_ = gaussTriangle2D.get_weights(integration_order_);
 			n_quad_points_ = gaussTriangle2D.get_n_quads(integration_order_);
             break;
         case QuadratureType::Gauss3DTet:
+            gaussTetrahedron3D.setup(integration_order_);
 			xi_list_ = gaussTetrahedron3D.get_xis(integration_order_);
 			eta_list_ = gaussTetrahedron3D.get_etas(integration_order_);
 			zeta_list_ = gaussTetrahedron3D.get_zetas(integration_order_);
@@ -50,6 +52,7 @@ namespace simple_math
 			n_quad_points_ = gaussTetrahedron3D.get_n_quads(integration_order_);
             break;
         case QuadratureType::Gauss3DWedge:
+            gaussWedge3D.setup(integration_order_);
 			xi_list_ = gaussWedge3D.get_xis(integration_order_);
 			eta_list_ = gaussWedge3D.get_etas(integration_order_);
 			zeta_list_ = gaussWedge3D.get_zetas(integration_order_);

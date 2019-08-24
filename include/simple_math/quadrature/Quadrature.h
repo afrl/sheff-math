@@ -1,5 +1,6 @@
 #pragma once
 
+#include "simple_math/Defines.h"
 #include "simple_math/EigenDefines.h"
 
 #include "Gauss.h"
@@ -30,10 +31,7 @@ namespace simple_math
         RuntimeGenerated2D, ///< Relies on the element storing a PersistentQuadratureScheme2D object
         RuntimeGenerated3D, ///< Relies on the element storing a PersistentQuadratureScheme3D object
 		UNKNOWN ///< Must be last! Used by Mapping class to know the last QuadratureType.
-	};
-
-    using QuadratureOrder = int8_t;
-    using QuadratureIndex = int8_t;
+	};    
 
     /// Stores all of the information needed to describe a quadrature scheme.
     struct QuadratureScheme
