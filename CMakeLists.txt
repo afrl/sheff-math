@@ -4,12 +4,11 @@ cmake_policy(SET CMP0048 NEW)
 project(SIMPLEMATH VERSION 1.0.0 LANGUAGES CXX)
 
 # Options
-option(SIMPLEMATH_BuildDev "Build the project in the dev folder. (intended for debugging this project by devs)" OFF)
 option(SIMPLEMATH_BuildTests "Build the unit tests." OFF)
 
 # For debugging, print generator, compiler, and options
 message(STATUS "Gen: ${CMAKE_GENERATOR}, CXX: ${CMAKE_CXX_COMPILER_ID}, Mode: ${CMAKE_BUILD_TYPE}")
-message(STATUS "Dev: ${SIMPLEMATH_BuildDev}, Tests: ${SIMPLEMATH_BuildTests}")
+message(STATUS "Tests: ${SIMPLEMATH_BuildTests}")
 
 ##################
 # Checking input #
@@ -68,11 +67,6 @@ assign_source_group_Utility()
 #################################
 # Add dev and unit test targets #
 #################################
-
-# Build dev
-if(SIMPLEMATH_BuildDev)
-    add_subdirectory(dev)
-endif()
     
 # Build tests
 if(SIMPLEMATH_BuildTests)
