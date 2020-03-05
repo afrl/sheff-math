@@ -7,7 +7,9 @@ namespace simple_math
 	{
 	}
 
-	void Quadrature::setup(const QuadratureScheme& quadrature_scheme)
+	void Quadrature::setup(
+        const QuadratureScheme& quadrature_scheme,
+        const PersistentQuadrature* run_time_generated_quadrature)
 	{
 		reset();
 
@@ -17,11 +19,13 @@ namespace simple_math
         switch (type_)
         {
         case QuadratureType::Gauss1D:
+            assert(!run_time_generated_quadrature);
 			xi_list_ = gauss.get_abscissae(integration_order_);
 			weight_list_ = gauss.get_weights(integration_order_);
 			n_quad_points_ = integration_order_;
             break;
         case QuadratureType::Gauss2D:
+            assert(!run_time_generated_quadrature);
             gauss2D.setup(integration_order_, gauss);
 			xi_list_ = gauss2D.get_xis(integration_order_);
 			eta_list_ = gauss2D.get_etas(integration_order_);
@@ -29,6 +33,7 @@ namespace simple_math
 			n_quad_points_ = integration_order_ * integration_order_;
             break;
         case QuadratureType::Gauss3D:
+            assert(!run_time_generated_quadrature);
             gauss3D.setup(integration_order_, gauss);
 			xi_list_ = gauss3D.get_xis(integration_order_);
 			eta_list_ = gauss3D.get_etas(integration_order_);
@@ -37,6 +42,7 @@ namespace simple_math
 			n_quad_points_ = integration_order_ * integration_order_ * integration_order_;
             break;
         case QuadratureType::Gauss2DTriangle:
+            assert(!run_time_generated_quadrature);
             gaussTriangle2D.setup(integration_order_);
 			xi_list_ = gaussTriangle2D.get_xis(integration_order_);
 			eta_list_ = gaussTriangle2D.get_etas(integration_order_);
@@ -44,6 +50,7 @@ namespace simple_math
 			n_quad_points_ = gaussTriangle2D.get_n_quads(integration_order_);
             break;
         case QuadratureType::Gauss3DTet:
+            assert(!run_time_generated_quadrature);
             gaussTetrahedron3D.setup(integration_order_);
 			xi_list_ = gaussTetrahedron3D.get_xis(integration_order_);
 			eta_list_ = gaussTetrahedron3D.get_etas(integration_order_);
@@ -52,6 +59,7 @@ namespace simple_math
 			n_quad_points_ = gaussTetrahedron3D.get_n_quads(integration_order_);
             break;
         case QuadratureType::Gauss3DWedge:
+            assert(!run_time_generated_quadrature);
             gaussWedge3D.setup(integration_order_);
 			xi_list_ = gaussWedge3D.get_xis(integration_order_);
 			eta_list_ = gaussWedge3D.get_etas(integration_order_);
@@ -60,12 +68,14 @@ namespace simple_math
 			n_quad_points_ = gaussWedge3D.get_n_quads(integration_order_);
             break;
         case QuadratureType::NewtonCotes1D:
+            assert(!run_time_generated_quadrature);
             nc1D.setup(integration_order_);
 			xi_list_ = nc1D.get_xis(integration_order_);
 			weight_list_ = nc1D.get_weights(integration_order_);
 			n_quad_points_ = integration_order_;
             break;
         case QuadratureType::NewtonCotes2D:
+            assert(!run_time_generated_quadrature);
             nc2D.setup(integration_order_);
 			xi_list_ = nc2D.get_xis(integration_order_);
 			eta_list_ = nc2D.get_etas(integration_order_);
@@ -73,6 +83,7 @@ namespace simple_math
 			n_quad_points_ = integration_order_ * integration_order_;
             break;
         case QuadratureType::NewtonCotes3D:
+            assert(!run_time_generated_quadrature);
             nc3D.setup(integration_order_);
 			xi_list_ = nc3D.get_xis(integration_order_);
 			eta_list_ = nc3D.get_etas(integration_order_);
@@ -81,34 +92,37 @@ namespace simple_math
 			n_quad_points_ = integration_order_ * integration_order_ * integration_order_;
             break;
         case QuadratureType::RuntimeGenerated1D:
-            xi_list_ = static_cast<PersistentQuadrature1D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->xis_;
-            weight_list_ = static_cast<PersistentQuadrature1D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->weights_;
-            n_quad_points_ = static_cast<PersistentQuadrature1D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->n_quad_points_;
+            assert(run_time_generated_quadrature);
+            xi_list_ = static_cast<const PersistentQuadrature1D*>(
+                run_time_generated_quadrature)->xis_;
+            weight_list_ = static_cast<const PersistentQuadrature1D*>(
+                run_time_generated_quadrature)->weights_;
+            n_quad_points_ = static_cast<const PersistentQuadrature1D*>(
+                run_time_generated_quadrature)->n_quad_points_;
             break;
         case QuadratureType::RuntimeGenerated2D:
-            xi_list_ = static_cast<PersistentQuadrature2D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->xis_;
-            eta_list_ = static_cast<PersistentQuadrature2D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->etas_;
-            weight_list_ = static_cast<PersistentQuadrature2D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->weights_;
-            n_quad_points_ = static_cast<PersistentQuadrature2D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->n_quad_points_;
+            assert(run_time_generated_quadrature);
+            xi_list_ = static_cast<const PersistentQuadrature2D*>(
+                run_time_generated_quadrature)->xis_;
+            eta_list_ = static_cast<const PersistentQuadrature2D*>(
+                run_time_generated_quadrature)->etas_;
+            weight_list_ = static_cast<const PersistentQuadrature2D*>(
+                run_time_generated_quadrature)->weights_;
+            n_quad_points_ = static_cast<const PersistentQuadrature2D*>(
+                run_time_generated_quadrature)->n_quad_points_;
             break;
         case QuadratureType::RuntimeGenerated3D:
-            xi_list_ = static_cast<PersistentQuadrature3D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->xis_;
-            eta_list_ = static_cast<PersistentQuadrature3D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->etas_;
-            zeta_list_ = static_cast<PersistentQuadrature3D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->zetas_;
-            weight_list_ = static_cast<PersistentQuadrature3D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->weights_;
-            n_quad_points_ = static_cast<PersistentQuadrature3D*>(
-                quadrature_scheme.run_time_generated_quadrature.get())->n_quad_points_;
+            assert(run_time_generated_quadrature);
+            xi_list_ = static_cast<const PersistentQuadrature3D*>(
+                run_time_generated_quadrature)->xis_;
+            eta_list_ = static_cast<const PersistentQuadrature3D*>(
+                run_time_generated_quadrature)->etas_;
+            zeta_list_ = static_cast<const PersistentQuadrature3D*>(
+                run_time_generated_quadrature)->zetas_;
+            weight_list_ = static_cast<const PersistentQuadrature3D*>(
+                run_time_generated_quadrature)->weights_;
+            n_quad_points_ = static_cast<const PersistentQuadrature3D*>(
+                run_time_generated_quadrature)->n_quad_points_;
             break;
 		}
 	}

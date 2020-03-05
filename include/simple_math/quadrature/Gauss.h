@@ -9,7 +9,7 @@
 
 namespace simple_math
 {
-	static const unsigned int MAX_GAUSS_ORDER = 20;
+	static const unsigned int MAX_GAUSS_ORDER = 5;
 
 	class Gauss
 	{

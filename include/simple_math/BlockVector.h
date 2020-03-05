@@ -29,6 +29,16 @@ namespace simple_math
 		/// \param j - the block index of block_v to take the block from
 		void set_block(const unsigned int i, BlockVector&& block_v, const unsigned int j);
 
+        /// Add the given vector the indicated block.  Sets the block if it is null.
+        void add_to_block(const unsigned int i, const VectorType& v);
+        /// Adds j-th block of block_v to the i-th block of this block matrix
+        /// \param i - the row of this structure to set
+        /// \param block_v - a r-value block vector to take a block from
+        /// \param j - the row of block_v to take the block from
+        void add_to_block(const unsigned int i,
+            const BlockVector& block_v,
+            const unsigned int j);
+
 		/// If i-th is a nullptr, this will initialize it to an empty vector
 		void init_empty_block(const unsigned int i);
 		/// Returns a bool indicating if the i-th block is a nullptr.
@@ -37,6 +47,7 @@ namespace simple_math
 		/// Access the i-th block by const-reference
 		/// \attention This will throw if the ith block is null
 		VectorType& get_block(const unsigned int i);
+        const VectorType& get_block(const unsigned int i) const;
 		/// Get the number of blocks
 		const unsigned int get_n_blocks() const;
 
@@ -78,7 +89,29 @@ namespace simple_math
 		blocks_[i] = std::move(block_v.blocks_[j]);
 	}
 
-	template<typename VectorType>
+    template<typename VectorType>
+    inline void BlockVector<VectorType>::add_to_block(const unsigned int i, const VectorType& v)
+    {
+        if (is_block_null(i))
+        {
+            blocks_[i] = std::make_unique<VectorType>(v);
+        }
+        else
+        {
+            *blocks_[i] += v;
+        }
+    }
+
+    template<typename VectorType>
+    inline void BlockVector<VectorType>::add_to_block(const unsigned int i, const BlockVector& block_v, const unsigned int j)
+    {
+        if (!block_v.is_block_null(j))
+        {
+            add_to_block(i, block_v.get_block(j));
+        }
+    }
+
+    template<typename VectorType>
 	inline void BlockVector<VectorType>::init_empty_block(const unsigned int i)
 	{
 		if (is_block_null(i))
@@ -98,6 +131,12 @@ namespace simple_math
 	{
 		return *blocks_[i];
 	}
+
+    template<typename VectorType>
+    inline const VectorType& BlockVector<VectorType>::get_block(const unsigned int i) const
+    {
+        return *blocks_[i];
+    }
 
 	template<typename VectorType>
 	inline const unsigned int BlockVector<VectorType>::get_n_blocks() const

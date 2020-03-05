@@ -36,6 +36,19 @@ namespace simple_math
                        BlockMatrix&& block_m,
                        const unsigned int k, const unsigned int l);
 
+        /// Add the given matrix the indicated block.  Sets the block if it is null
+        void add_to_block(const unsigned int i, const unsigned int j,
+                          const MatrixType& m);
+        /// Adds (k, l) block of block_m to the (i, j) block of this block matrix
+        /// \param i - the row of this structure to set
+        /// \param j - the column of this structure to set
+        /// \param block_m - a r-value block matrix to take a block from
+        /// \param k - the row of block_m to take the block from
+        /// \param l - the column of block_m to take the block from
+        void add_to_block(const unsigned int i, const unsigned int j,
+                          const BlockMatrix& block_m,
+                          const unsigned int k, const unsigned int l);
+
         /// If (i, j) is a nullptr, this will initialize it to an empty matrix
         void init_empty_block(const unsigned int i, const unsigned int j);
         /// Returns a bool indicating if the (i, j) block is a nullptr.
@@ -44,6 +57,9 @@ namespace simple_math
         /// Access the (i, j) block by reference
         /// \attention This will throw if the ith block is null
         MatrixType& get_block(const unsigned int i, const unsigned int j);
+        // Access the (i, j) block by reference
+        /// \attention This will throw if the ith block is null
+        const MatrixType& get_block(const unsigned int i, const unsigned int j) const;
         /// Get the number of blocks
         const unsigned int get_n_blocks() const;
         /// Get the number of rows
@@ -81,9 +97,9 @@ namespace simple_math
     {
         const auto block_i = get_unraveled_index(i, j);
         if (is_block_null(i, j))
-            {
-                blocks_[block_i] = std::make_unique<MatrixType>();
-            }
+        {
+            blocks_[block_i] = std::make_unique<MatrixType>();
+        }
 
         *blocks_[block_i] = m;
     }
@@ -98,7 +114,7 @@ namespace simple_math
     template<typename MatrixType>
     inline void BlockMatrix<MatrixType>::set_block( const unsigned int   i,
                                                     const unsigned int   j,
-                                                          BlockMatrix && block_m,
+                                                    BlockMatrix && block_m,
                                                     const unsigned int   k,
                                                     const unsigned int   l )
     {
@@ -108,13 +124,36 @@ namespace simple_math
     }
 
     template<typename MatrixType>
+    inline void BlockMatrix<MatrixType>::add_to_block(const unsigned int i, const unsigned int j, const MatrixType& m)
+    {
+        const auto block_i = get_unraveled_index(i, j);
+        if (is_block_null(i, j))
+        {
+            blocks_[block_i] = std::make_unique<MatrixType>(m);
+        }
+        else
+        {
+            *blocks_[block_i] += m;
+        }
+    }
+
+    template<typename MatrixType>
+    inline void BlockMatrix<MatrixType>::add_to_block(const unsigned int i, const unsigned int j, const BlockMatrix& block_m, const unsigned int k, const unsigned int l)
+    {
+        if (!block_m.is_block_null(k, l))
+        {
+            add_to_block(i, j, block_m.get_block(k, l));
+        }
+    }
+
+    template<typename MatrixType>
     inline void BlockMatrix<MatrixType>::init_empty_block(const unsigned int i, const unsigned int j)
     {
         const auto block_i = get_unraveled_index(i, j);
         if (is_block_null(i, j))
-            {
-                blocks_[block_i] = std::make_unique<MatrixType>();
-            }
+        {
+            blocks_[block_i] = std::make_unique<MatrixType>();
+        }
     }
 
     template<typename MatrixType>
@@ -126,6 +165,14 @@ namespace simple_math
 
     template<typename MatrixType>
     inline MatrixType & BlockMatrix<MatrixType>::get_block(const unsigned int i, const unsigned int j)
+    {
+        const auto block_i = get_unraveled_index(i, j);
+        _UTIL_ASSERT_C(blocks_[block_i] != nullptr, "Attempted to access a null block.");
+        return *blocks_[block_i];
+    }
+
+    template<typename MatrixType>
+    inline const MatrixType& BlockMatrix<MatrixType>::get_block(const unsigned int i, const unsigned int j) const
     {
         const auto block_i = get_unraveled_index(i, j);
         _UTIL_ASSERT_C(blocks_[block_i] != nullptr, "Attempted to access a null block.");

@@ -26,6 +26,12 @@ namespace simple_math
         return { v[0], v[1], v[2] };
     }
 
+    template<typename EigenType>
+    Point to_point(const EigenType& v)
+    {
+        return { v[0], v[1], v[2] };
+    }
+
     static std::string to_string(const simple_math::Point& point)
     {
         return "(" + std::to_string(point[0])

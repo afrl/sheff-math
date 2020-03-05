@@ -38,7 +38,6 @@ namespace simple_math
     {
         QuadratureType type;
         QuadratureOrder integration_order;
-        std::unique_ptr<PersistentQuadrature> run_time_generated_quadrature;
     };
 
 	class Quadrature
@@ -47,7 +46,9 @@ namespace simple_math
 		/// Constructor creates all the quadrature objects
 		Quadrature();
 
-		void setup(const QuadratureScheme& quadrature_scheme);
+		void setup(
+            const QuadratureScheme& quadrature_scheme,
+            const PersistentQuadrature* run_time_generated_quadrature = nullptr);
 		void reset();
 
 		const QuadratureType& get_type() const { return type_; }
