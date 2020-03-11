@@ -43,13 +43,13 @@ namespace simple_math
 		void init_empty_block(const unsigned int i);
 		/// Returns a bool indicating if the i-th block is a nullptr.
 		/// This is be used before a call to BlockVector::get_block.
-		const bool is_block_null(const unsigned int i) const;
+		bool is_block_null(const unsigned int i) const;
 		/// Access the i-th block by const-reference
 		/// \attention This will throw if the ith block is null
 		VectorType& get_block(const unsigned int i);
         const VectorType& get_block(const unsigned int i) const;
 		/// Get the number of blocks
-		const unsigned int get_n_blocks() const;
+		unsigned int get_n_blocks() const;
 
 	private:
 		std::vector<std::unique_ptr<VectorType>> blocks_;
@@ -121,7 +121,7 @@ namespace simple_math
 	}
 
 	template<typename VectorType>
-	inline const bool BlockVector<VectorType>::is_block_null(const unsigned int i) const
+	inline bool BlockVector<VectorType>::is_block_null(const unsigned int i) const
 	{
 		return blocks_[i] == nullptr;
 	}
@@ -139,7 +139,7 @@ namespace simple_math
     }
 
 	template<typename VectorType>
-	inline const unsigned int BlockVector<VectorType>::get_n_blocks() const
+	inline unsigned int BlockVector<VectorType>::get_n_blocks() const
 	{
 		return static_cast<unsigned int>(blocks_.size());
 	}

@@ -15,7 +15,7 @@ namespace simple_math
         const double* get_etas(const unsigned int &integration_order) { return eta[integration_order - 1]; }
         const double* get_weights(const unsigned int &integration_order) { return weight[integration_order - 1]; }
 
-        const unsigned int get_n_quads(const unsigned int &integration_order);
+        unsigned int get_n_quads(const unsigned int &integration_order);
 
 	protected:
 		static const int MAX_GAUSS_TRI_ORDER = 4;

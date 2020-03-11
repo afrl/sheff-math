@@ -202,7 +202,7 @@ namespace simple_math
             std::swap(weights_, other.weights_);
         }
 
-        const unsigned int n_quad_points() const
+        unsigned int n_quad_points() const
         {
             return n_quad_points_;
         }

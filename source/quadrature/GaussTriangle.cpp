@@ -23,7 +23,7 @@ namespace simple_math
         }
     }
 
-    const unsigned int GaussTriangle::get_n_quads(const unsigned int & integration_order)
+    unsigned int GaussTriangle::get_n_quads(const unsigned int & integration_order)
     {
         const unsigned int order_index = integration_order - 1;
         return length[order_index];

@@ -53,7 +53,7 @@ namespace simple_math
         void init_empty_block(const unsigned int i, const unsigned int j);
         /// Returns a bool indicating if the (i, j) block is a nullptr.
         /// This is be used before a call to BlockMatrix::get_block.
-        const bool is_block_null(const unsigned int i, const unsigned int j) const;
+        bool is_block_null(const unsigned int i, const unsigned int j) const;
         /// Access the (i, j) block by reference
         /// \attention This will throw if the ith block is null
         MatrixType& get_block(const unsigned int i, const unsigned int j);
@@ -61,9 +61,9 @@ namespace simple_math
         /// \attention This will throw if the ith block is null
         const MatrixType& get_block(const unsigned int i, const unsigned int j) const;
         /// Get the number of blocks
-        const unsigned int get_n_blocks() const;
+        unsigned int get_n_blocks() const;
         /// Get the number of rows
-        const unsigned int get_n_rows() const;
+        unsigned int get_n_rows() const;
         /// Get a string representation of the matrix for debugging purposes
         std::string str() const;
 
@@ -74,7 +74,7 @@ namespace simple_math
         const unsigned int n_rows_;
 
         /// Get the single index from the (i, j) index pair
-        const unsigned int get_unraveled_index(const unsigned int i, const unsigned int j) const;
+        unsigned int get_unraveled_index(const unsigned int i, const unsigned int j) const;
     };
 
 
@@ -157,7 +157,7 @@ namespace simple_math
     }
 
     template<typename MatrixType>
-    inline const bool BlockMatrix<MatrixType>::is_block_null(const unsigned int i, const unsigned int j) const
+    inline bool BlockMatrix<MatrixType>::is_block_null(const unsigned int i, const unsigned int j) const
     {
         const auto block_i = get_unraveled_index(i, j);
         return blocks_[block_i] == nullptr;
@@ -180,13 +180,13 @@ namespace simple_math
     }
 
     template<typename MatrixType>
-    inline const unsigned int BlockMatrix<MatrixType>::get_n_blocks() const
+    inline unsigned int BlockMatrix<MatrixType>::get_n_blocks() const
     {
         return static_cast<unsigned int>(blocks_.size());
     }
 
     template<typename MatrixType>
-    inline const unsigned int BlockMatrix<MatrixType>::get_n_rows() const
+    inline unsigned int BlockMatrix<MatrixType>::get_n_rows() const
     {
         return n_rows_;
     }
@@ -243,7 +243,7 @@ namespace simple_math
     }
 
     template<typename MatrixType>
-    inline const unsigned int BlockMatrix<MatrixType>::get_unraveled_index(const unsigned int i, const unsigned int j) const
+    inline unsigned int BlockMatrix<MatrixType>::get_unraveled_index(const unsigned int i, const unsigned int j) const
     {
         return i * n_rows_ + j;
     }
