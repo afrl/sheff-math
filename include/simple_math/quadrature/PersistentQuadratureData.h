@@ -55,9 +55,19 @@ namespace simple_math
             xis_[index] = xi;
         }
 
+        simple_math::Point get_quad_point(const unsigned int index) const
+        {
+            return { xis_[index] };
+        }
+
         void set_quad_weight(const unsigned int index, const double weight)
         {
             weights_[index] = weight;
+        }
+
+        double get_quad_weight(const unsigned int index) const
+        {
+            return weights_[index];
         }
 
         /// Performs a simple check to ensure all the weights are in the range [0,1]
@@ -123,9 +133,19 @@ namespace simple_math
             etas_[index] = eta;
         }
 
+        simple_math::Point get_quad_point(const unsigned int index) const
+        {
+            return { xis_[index], etas_[index] };
+        }
+
         void set_quad_weight(const unsigned int index, const double weight)
         {
             weights_[index] = weight;
+        }
+
+        double get_quad_weight(const unsigned int index) const
+        {
+            return weights_[index];
         }
 
         /// Performs a simple check to ensure all the weights are in the range [0,1]
@@ -214,9 +234,19 @@ namespace simple_math
             zetas_[index] = zeta;
         }
 
+        simple_math::Point get_quad_point(const unsigned int index) const
+        {
+            return { xis_[index], etas_[index], zetas_[index] };
+        }
+
         void set_quad_weight(const unsigned int index, const double weight)
         {
             weights_[index] = weight;
+        }
+
+        double get_quad_weight(const unsigned int index) const
+        {
+            return weights_[index];
         }
 
         void multiply_all_weights(const double factor_to_multiply)
