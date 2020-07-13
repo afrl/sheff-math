@@ -53,12 +53,33 @@ namespace simple_math
 
 		const QuadratureType& get_type() const { return type_; }
 		const QuadratureOrder& get_integration_order() const { return integration_order_; }
+
+		/// Returns the number of quadrature points that exist for the last scheme passed to setup()
 		const QuadratureIndex& n_quad_points() const { return n_quad_points_; }
+
+		/// Returns the corresponding parametric point for the given quadrture point index.
+		/// Note: quad_index must be less than n_quad_points().  No check performed.
 		const Point parametric_point(const QuadratureIndex &quad_index) const;
-		const double& xi(const QuadratureIndex &quad_index) const { return get(quad_index, xi_list_); };
-		const double& eta(const QuadratureIndex &quad_index) const { return get(quad_index, eta_list_); };
-		const double& zeta(const QuadratureIndex &quad_index) const { return get(quad_index, zeta_list_); };
-		const double& weight(const QuadratureIndex &quad_index) const { return get(quad_index, weight_list_); };
+
+		/// Returns the parametric points in the form a matrix, where the row corresponds to the
+		/// respective quadrature point and the column corresponds to the component of the parametric
+		/// point.
+		const GeneralMatrix parametric_points() const;
+
+		/// Returns the first component of the parametic point for the given quad point.
+		inline const double& xi(const QuadratureIndex &quad_index) const { return get(quad_index, xi_list_); }
+
+		/// Returns the second component of the parametic point for the given quad point.
+		/// Note: this should only be called for 2D or 3D quadrature schemes.
+		inline const double& eta(const QuadratureIndex &quad_index) const { return get(quad_index, eta_list_); }
+
+		/// Returns the third component of the parametic point for the given quad point.
+		/// Note: this should only be called for 3D quadrature schemes.
+		inline const double& zeta(const QuadratureIndex &quad_index) const { return get(quad_index, zeta_list_); }
+
+		/// Returns the weight of the quad point.
+		inline const double& weight(const QuadratureIndex &quad_index) const { return get(quad_index, weight_list_); }
+
 
 	private:
 		/// The current quadrature type

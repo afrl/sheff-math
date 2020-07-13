@@ -145,4 +145,38 @@ namespace simple_math
 			return { xi(quad_index), eta(quad_index), zeta(quad_index) };
 	}
 
+    const GeneralMatrix Quadrature::parametric_points() const
+    {
+        if (eta_list_ == nullptr) // 1D
+        {
+            GeneralMatrix points(n_quad_points_, 1);
+            for (auto i = 0; i < n_quad_points_; i++)
+            {
+                points(i, 0) = xi(i);
+            }
+            return points;
+        }
+        else if (zeta_list_ == nullptr) // 2D
+        {
+            GeneralMatrix points(n_quad_points_, 2);
+            for (auto i = 0; i < n_quad_points_; i++)
+            {
+                points(i, 0) = xi(i);
+                points(i, 1) = eta(i);
+            }
+            return points;
+        }
+        else // 3D
+        {
+            GeneralMatrix points(n_quad_points_, 3);
+            for (auto i = 0; i < n_quad_points_; i++)
+            {
+                points(i, 0) = xi(i);
+                points(i, 1) = eta(i);
+                points(i, 2) = zeta(i);
+            }
+            return points;
+        }
+    }
+
 }
