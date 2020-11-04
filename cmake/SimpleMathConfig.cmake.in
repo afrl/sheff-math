@@ -4,6 +4,7 @@ find_package(Utility CONFIG REQUIRED HINTS
 find_package(Eigen3 3.3.0 CONFIG REQUIRED HINTS 
   "${CMAKE_SOURCE_DIR}/../third_party/eigen_install_dir" "${CMAKE_SOURCE_DIR}/../../third_party/eigen_install_dir" "${CMAKE_SOURCE_DIR}/modules/third_party/eigen_install_dir")
 
+set(SIMPLEMATH_INC_DIR "@SIMPLEMATH_INCLUDE@")
 
 if(NOT TARGET SimpleMath::SimpleMath)
 	get_filename_component(SIMPLEMATH_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)

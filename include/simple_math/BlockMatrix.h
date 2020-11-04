@@ -214,12 +214,12 @@ namespace simple_math
             }
 
         std::stringstream ss;
-        for (auto i : utility::range_from_zero(n_rows_))
+        for (auto i : utility::range(n_rows_))
             {
-                for (auto row_in_block : utility::range_from_zero(n_rows_per_block))
+                for (auto row_in_block : utility::range(n_rows_per_block))
                     {
                         ss << " ";
-                        for (auto j : utility::range_from_zero(n_rows_))
+                        for (auto j : utility::range(n_rows_))
                             {
                                 const auto block_i = get_unraveled_index(i, j);
                                 auto& block = blocks_[block_i];
@@ -229,7 +229,7 @@ namespace simple_math
                                     }
                                 else
                                     {
-                                        for (auto col_in_block : utility::range_from_zero(n_cols_per_block))
+                                        for (auto col_in_block : utility::range(n_cols_per_block))
                                             {
                                                 ss << "            0";
                                             }

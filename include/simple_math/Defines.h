@@ -12,6 +12,6 @@ namespace simple_math
 
 	using FloatType = double;
 	using Point = std::array<FloatType, 3>;
-    using QuadratureIndex = uint8_t;
+    using QuadratureIndex = uint16_t;
     using QuadratureOrder = uint8_t;
 }
