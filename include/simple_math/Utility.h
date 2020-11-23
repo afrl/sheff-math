@@ -33,75 +33,43 @@ static bool operator<(const Point& a, const Point& b)
     return (a[0] < b[0]) || (a[0] == b[0] && a[1] < b[1]) ||
            (a[0] == b[0] && a[1] == b[1] && a[2] < b[2]);
 }
-}
+} // point_operators
 
 /// Returns if a < b while taking into account a numerical tolerance
 bool compare_points(const Point& a, const Point& b, const double tolerance);
 
-static double distance(const Point& a, const Point& b)
-{
-    return sqrt((a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1]) +
-                (a[2] - b[2]) * (a[2] - b[2]));
-}
+/// Returns the distance between two points.
+double distance(const Point& a, const Point& b);
 
 /// Returns an object that acts like a Vector3D without copying the memory
 /// from the given point.  Provides the Eigen interface for a Point.
 Eigen::Map<const Vector3D> point_as_vector(const Point& p);
 
-/// Creates a linearly spaced list of points between p1 and p2 with the specified number of intervals.
-static std::vector<Point> linspace(const Point& p1, const Point& p2, const int& n_intervals)
-{
-    std::vector<Point> result(n_intervals + 1, { 0, 0, 0 });
-    for (int i = 0; i < n_intervals; ++i)
-    {
-        result[i] =
-          p1 + ((double)i / (n_intervals)) * (p2 - p1); // This should avoid roundoff issues
-    }
-    // Make sure that the last value is exactly what you expect (no roundoff)
-    result.back() = p2;
-    return result;
-}
+/// Creates a linearly spaced list of points between p1 and p2 with the specified number of
+/// intervals.
+std::vector<Point> linspace(const Point& p1, const Point& p2, const int& n_intervals);
 
-/// Convert vector to point
+/// Convert Vector3D to point
 static Point to_point(const Vector3D& v)
 {
     return { v[0], v[1], v[2] };
 }
 
+/// Convert other types of Eigen vectors to point
 template<typename EigenType>
 Point to_point(const EigenType& v)
 {
     return { v[0], v[1], v[2] };
 }
 
-static std::string to_string(const simple_math::Point& point)
-{
-    return "(" + std::to_string(point[0]) + ", " + std::to_string(point[1]) + ", " +
-           std::to_string(point[2]) + ")";
-}
+/// Returns a string in the form (x, y, z) given a point.
+std::string to_string(const simple_math::Point& point);
 
-static double calculate_mean(const std::vector<double>& data)
-{
-    double sum = 0.0;
-    for (const auto& i : data)
-    {
-        sum += i;
-    }
-    const double mean = sum / (double)data.size();
-    return mean;
-}
+/// Returns the mean of a list of doubles
+double calculate_mean(const std::vector<double>& data);
 
-static double calculate_std_dev(const std::vector<double>& data)
-{
-    double mean    = calculate_mean(data);
-    double std_dev = 0.0;
-    for (auto i : data)
-    {
-        std_dev += pow(i - mean, 2);
-    }
-    std_dev = sqrt(std_dev / data.size());
-    return std_dev;
-}
+/// Returns the standard deviation for a list of doubles
+double calculate_std_dev(const std::vector<double>& data);
 
 namespace detail
 {
@@ -145,6 +113,8 @@ inline constexpr int8_t sign(T x, const T tol)
     return detail::sign(x, std::is_signed<T>(), tol);
 }
 
+/// Given a vector of complex numbers, returns the value and index (as a pair) of the entry with the
+/// largest real part.
 template<typename ComplexVector>
 static std::pair<typename ComplexVector::value_type, typename ComplexVector::Index>
 find_max_real_part(const ComplexVector& vector)
