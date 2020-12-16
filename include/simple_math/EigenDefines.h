@@ -19,6 +19,12 @@ using GeneralVector    = Eigen::Matrix<FloatType, Eigen::Dynamic, 1>;
 using GeneralMatrix    = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 using EigenBlockVector = BlockVector<GeneralVector>;
 using EigenBlockMatrix = BlockMatrix<GeneralMatrix>;
+using DynamicInt16Matrix = Eigen::Matrix<int16_t, -1, -1, 1>;
+using DynamicInt32Matrix = Eigen::Matrix<int32_t, -1, -1, 1>;
+using DynamicInt64Matrix = Eigen::Matrix<int64_t, -1, -1, 1>;
+using DynamicUInt16Matrix = Eigen::Matrix<uint16_t, -1, -1, 1>;
+using DynamicUInt32Matrix = Eigen::Matrix<uint32_t, -1, -1, 1>;
+using DynamicUInt64Matrix = Eigen::Matrix<uint64_t, -1, -1, 1>;
 }
 
 // Provide serialization specialization for Eigen types
