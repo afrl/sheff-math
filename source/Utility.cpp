@@ -36,6 +36,18 @@ std::vector<Point> linspace(const Point& p1, const Point& p2, const int& n_inter
     result.back() = p2;
     return result;
 }
+std::vector<double> linspace(const double& start, const double& end, const int& n_intervals)
+{
+    std::vector<double> result(n_intervals + 1);
+    for (int i = 0; i < n_intervals; ++i)
+    {
+        result[i] =
+          start + ((double)i / (n_intervals)) * (end - start); // This should avoid roundoff issues
+    }
+    // Make sure that the last value is exactly what you expect (no roundoff)
+    result.back() = end;
+    return result;
+}
 std::string to_string(const simple_math::Point& point)
 {
     return "(" + std::to_string(point[0]) + ", " + std::to_string(point[1]) + ", " +

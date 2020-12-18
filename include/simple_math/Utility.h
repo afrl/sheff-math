@@ -49,6 +49,10 @@ Eigen::Map<const Vector3D> point_as_vector(const Point& p);
 /// intervals.
 std::vector<Point> linspace(const Point& p1, const Point& p2, const int& n_intervals);
 
+/// Creates a linearly spaced list of double's between start and end with the specified number of
+/// intervals.
+std::vector<double> linspace(const double& start, const double& end, const int& n_intervals);
+
 /// Convert Vector3D to point
 static Point to_point(const Vector3D& v)
 {
