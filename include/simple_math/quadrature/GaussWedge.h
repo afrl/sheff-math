@@ -13,8 +13,7 @@ class GaussWedge final
     /// @brief Constructs static memory for 3D Gauss quadrature specialized for wedges.
     ///
     /// @template N - order of integration (1 results in 2 Gauss points, 2 results in 9 Gauss
-    /// points,
-    ///               3 results 18 Gauss points)
+    /// points, 3 results in 18 Gauss points)
     ///
     /// Note: thread-safe for compilers that fully support C++11 with thread-safe function-local
     /// static initializers (or "magic statics").
@@ -131,6 +130,7 @@ inline GaussWedge<2>::GaussWedge()
 {
     xis_     = new double[n_points()];
     etas_    = new double[n_points()];
+    zetas_   = new double[n_points()];
     weights_ = new double[n_points()];
 
     auto val1       = 1.0 / 6;

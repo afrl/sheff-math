@@ -22,6 +22,11 @@ Eigen::Map<const Vector3D> point_as_vector(const Point& p)
     return Eigen::Map<const Vector3D>(&p[0], p.size());
 }
 
+Vector3D point_to_vector(const Point& p)
+{
+    return Vector3D(p[0], p[1], p[2]);
+}
+
 std::vector<Point> linspace(const Point& p1, const Point& p2, const int& n_intervals)
 {
     using namespace point_operators;
@@ -36,6 +41,7 @@ std::vector<Point> linspace(const Point& p1, const Point& p2, const int& n_inter
     result.back() = p2;
     return result;
 }
+
 std::vector<double> linspace(const double& start, const double& end, const int& n_intervals)
 {
     std::vector<double> result(n_intervals + 1);

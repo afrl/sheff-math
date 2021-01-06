@@ -1,5 +1,3 @@
-#include "..\include\simple_math\Intersection.h"
-
 #include "simple_math/Intersection.h"
 
 namespace simple_math
@@ -12,17 +10,15 @@ namespace simple_math
 static bool refine_guess(const std::function<double(Point)>& signed_distance_function,
                          const Point& left_p,
                          const Point& right_p,
-                         const double& segment_length,
                          double& guess_s,
                          Point& guess_p,
                          double& prev_s,
                          double& prev_residual,
-                         const double segment_normalized_tol = 1e-6,
-                         const int max_iterations            = 10)
+                         const double tol         = 1e-10,
+                         const int max_iterations = 20)
 {
     using namespace point_operators;
 
-    const auto tol     = segment_normalized_tol * segment_length;
     int curr_iteration = 1;
     auto residual      = signed_distance_function(guess_p);
     double delta_s;
@@ -52,13 +48,110 @@ static bool refine_guess(const std::function<double(Point)>& signed_distance_fun
     return curr_iteration <= max_iterations;
 }
 
+static std::vector<double> guess_roots(const SignedDistanceFunction& signed_distance_function,
+                                       const Point& left_p,
+                                       const double& left_value,
+                                       const Point& right_p,
+                                       const double& right_value,
+                                       const double valid_tol = 0.2)
+{
+    // Short-circuit the linear case
+    if (signed_distance_function.approx_polynomial_order == 1)
+    {
+        const double root = -left_value / (right_value - left_value);
+        if (root >= 0.0 && root <= 1.0)
+        {
+            return { -left_value / (right_value - left_value) };
+        }
+        else
+        {
+            return {};
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    // General procedure for fitting a polynomial of the approximate order
+
+    using namespace point_operators;
+
+    auto N = signed_distance_function.approx_polynomial_order + 1;
+    auto s = linspace(0.0, 1.0, N - 1);
+    simple_math::GeneralVector fs(N);
+    fs(0)     = left_value;
+    fs(N - 1) = right_value;
+    for (auto i : utility::range<unsigned int>(1, N - 1))
+    {
+        Point p = (1.0 - s[i]) * left_p + s[i] * right_p;
+        fs[i]   = signed_distance_function.f(p);
+    }
+
+    simple_math::GeneralMatrix s_matrix(N, N);
+    for (auto i : utility::range(N))
+    {
+        for (auto j : utility::range(N))
+        {
+            s_matrix(i, j) = pow(s[i], j);
+        }
+    }
+
+    simple_math::GeneralVector c = s_matrix.inverse() * fs;
+    // c represents the coefficients that fits the level-set in the form:
+    // fitted level-set = c[0] + c[1]*s + ... + c[p]*s^p, where
+    // p = signed_distance_function.approx_polynomial_order
+
+    ///////////////////////////////////////////////////////////////////////////////////
+    // Find roots
+
+    std::vector<double> roots;
+    if (signed_distance_function.approx_polynomial_order == 2)
+    { // y = c[0] + c[1]*x + c[2]*x^2
+        const double d = c[1] * c[1] - 4 * c[2] * c[0];
+        if (d < 0.0)
+        {
+            return {};
+        }
+        if (c[2] == 0.0)
+        {
+            const double root = -left_value / (right_value - left_value);
+            if (root >= 0.0 && root <= 1.0)
+            {
+                return { -left_value / (right_value - left_value) };
+            }
+            else
+            {
+                return {};
+            }
+        }
+
+        const double sd = sqrt(d);
+        roots           = { (-c[1] - sd) / (2.0 * c[2]), (-c[1] + sd) / (2.0 * c[2]) };
+    }
+    // TODO implement cubic polynomial roots
+    else
+    {
+        throw _UTIL_MSG_EXCEPT(
+          "An analytical expression for roots is not implemented for polynomials of degree " +
+          std::to_string(signed_distance_function.approx_polynomial_order));
+    }
+
+    std::vector<double> valid_roots;
+    for (auto& r : roots)
+    {
+        if (r >= -valid_tol && r <= 1.0 + valid_tol)
+        {
+            valid_roots.push_back(r);
+        }
+    }
+    return valid_roots;
+}
 
 std::vector<Intersection> find_segment_level_set_intersection(
-  const std::function<double(Point)> signed_distance_function,
+  const SignedDistanceFunction& signed_distance_function,
   const Point& p1,
   const double& p1_value,
   const Point& p2,
-  const double& p2_value)
+  const double& p2_value,
+  const double& tol)
 {
     using namespace point_operators;
 
@@ -80,11 +173,8 @@ std::vector<Intersection> find_segment_level_set_intersection(
         right_value = p1_value;
     }
 
-    const double segment_length         = distance(left_p, right_p);
-    const double segment_normalized_tol = 1e-4;
-    const auto tol                      = segment_normalized_tol * segment_length;
-    auto left_sign                      = sign(left_value, tol);
-    auto right_sign                     = sign(right_value, tol);
+    auto left_sign  = sign(left_value, tol);
+    auto right_sign = sign(right_value, tol);
 
     std::vector<Intersection> intersections;
 
@@ -98,80 +188,37 @@ std::vector<Intersection> find_segment_level_set_intersection(
         intersections.push_back({ right_p, Intersection::Type::ENDPOINT });
     }
 
-    if (left_sign != right_sign && left_sign != 0 && right_sign != 0)
-    { // Guaranteed to intersect (if assumption holds that level-set is C-0)
-        // s is the distance along the segment at which the intersections occurs.
-        auto s                  = -left_value / (right_value - left_value);
-        auto intersection_point = (1. - s) * left_p + s * right_p;
+    auto root_guesses =
+      guess_roots(signed_distance_function, left_p, left_value, right_p, right_value);
+    for (auto& root_guess : root_guesses)
+    {
+        auto guess_s        = root_guess;
+        auto guess_p        = (1. - guess_s) * left_p + guess_s * right_p;
+        auto guess_residual = signed_distance_function.f(guess_p);
 
-        // Use left_p as "previous guess" for finite difference approximation of gradient
-        auto prev_s        = 0.0;
-        auto prev_residual = left_value;
-        bool success       = refine_guess(signed_distance_function,
+        auto perturbed_s        = guess_s + 0.05;
+        auto perturbed_p        = (1. - perturbed_s) * left_p + perturbed_s * right_p;
+        auto perturbed_residual = signed_distance_function.f(perturbed_p);
+
+        bool success           = refine_guess(signed_distance_function.f,
                                     left_p,
                                     right_p,
-                                    segment_length,
-                                    s,
-                                    intersection_point,
-                                    prev_s,
-                                    prev_residual);
-        assert(success);
-
-        intersections.push_back({ intersection_point, Intersection::Type::INTERIOR });
-    }
-    else
-    {
-        if (left_sign != 0 && abs(left_value) < segment_length)
-        { // The segment could possibly intersect the level-set multiple times
-            // Perform approximate gradient descent starting from each end point of the line
-            // segment.
-            const auto s_pertubation    = 0.1;
-            auto left_search_s          = s_pertubation;
-            auto left_search_p          = (1. - left_search_s) * left_p + left_search_s * right_p;
-            auto prev_s                 = 0.0;
-            auto prev_residual          = left_value;
-            bool left_success           = refine_guess(signed_distance_function,
-                                             left_p,
-                                             right_p,
-                                             segment_length,
-                                             left_search_s,
-                                             left_search_p,
-                                             prev_s,
-                                             prev_residual);
-            const bool left_is_interior = left_success && left_search_s >= 0 && left_search_s <= 1;
-            if (left_is_interior)
+                                    guess_s,
+                                    guess_p,
+                                    perturbed_s,
+                                    perturbed_residual);
+        const bool is_interior = success && guess_s >= 0 && guess_s <= 1;
+        if (is_interior)
+        {
+            bool already_has_point = false;
+            for (auto& intersection : intersections)
             {
-                intersections.push_back({ left_search_p, Intersection::Type::INTERIOR });
+                const double d = distance(guess_p, intersection.point);
+                already_has_point |= d < tol;
             }
-        }
-
-        if (right_sign != 0 && abs(right_value) < segment_length)
-        { // The segment could possibly intersect the level-set multiple times
-            // Perform approximate gradient descent starting from each end point of the line
-            // segment.
-            const auto s_pertubation = 0.1;
-            auto right_search_s      = 1.0 - s_pertubation;
-            auto right_search_p      = (1. - right_search_s) * left_p + right_search_s * right_p;
-            auto prev_s              = 1.0;
-            auto prev_residual       = right_value;
-            bool right_success       = refine_guess(signed_distance_function,
-                                              left_p,
-                                              right_p,
-                                              segment_length,
-                                              right_search_s,
-                                              right_search_p,
-                                              prev_s,
-                                              prev_residual);
-            bool right_is_interior   = right_success && right_search_s >= 0 && right_search_s <= 1;
-            if (right_is_interior)
+            if (!already_has_point)
             {
-                auto test = simple_math::distance(intersections[0].point, right_search_p);
-                // If they are the same point, then assume it is a tangent intersection
-                if (intersections.size() == 0 ||
-                    simple_math::distance(intersections[0].point, right_search_p) > tol)
-                { // There are two interior cuts
-                    intersections.push_back({ right_search_p, Intersection::Type::INTERIOR });
-                }
+                intersections.push_back({ guess_p, Intersection::Type::INTERIOR });
             }
         }
     }
@@ -180,14 +227,14 @@ std::vector<Intersection> find_segment_level_set_intersection(
 }
 
 std::vector<Intersection> find_segment_level_set_intersection(
-  const std::function<double(Point)> signed_distance_function,
+  const SignedDistanceFunction& signed_distance_function,
   const Point& p1,
   const Point& p2)
 {
     return find_segment_level_set_intersection(signed_distance_function,
                                                p1,
-                                               signed_distance_function(p1),
+                                               signed_distance_function.f(p1),
                                                p2,
-                                               signed_distance_function(p2));
+                                               signed_distance_function.f(p2));
 }
 }

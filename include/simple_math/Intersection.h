@@ -26,6 +26,15 @@ struct SplitPolygonResult
     std::vector<PolygonIndex> pos_points;
 };
 
+/// A simple struct that holds a functor describing a signed distance function and the approximate
+/// polynomial order of the functor, which is used in the intersection routine to make an
+/// appropriate guess at the root of the signed distance function.
+struct SignedDistanceFunction
+{
+    std::function<double(const Point&)> f;
+    unsigned int approx_polynomial_order;
+};
+
 /// @brief Finds intersections between a level-set (possibly non-linear) and a line segment.
 /// @param signed_distance_function -
 ///    this can be non-linear but should only intersect the line segment at most once
@@ -41,16 +50,17 @@ struct SplitPolygonResult
 ///    only be checked if at least one of the two points have a signed distance less than the length
 ///    of the line segment.
 std::vector<Intersection> find_segment_level_set_intersection(
-  const std::function<double(Point)> signed_distance_function,
+  const SignedDistanceFunction& signed_distance_function,
   const Point& p1,
   const double& p1_value,
   const Point& p2,
-  const double& p2_value);
+  const double& p2_value,
+  const double& tol = 1e-4);
 
 /// @brief The same as the function above, but this internally calculates the signed distances at p1
 /// and p2.
 std::vector<Intersection> find_segment_level_set_intersection(
-  const std::function<double(Point)> signed_distance_function,
+  const SignedDistanceFunction& signed_distance_function,
   const Point& p1,
   const Point& p2);
 

@@ -13,6 +13,12 @@ static Point operator*(const double& d, const Point& p)
     return { d * p[0], d * p[1], d * p[2] };
 }
 
+/// @brief Division operator for a point by a scalar.  Returns a new scaled point.
+static Point operator/(const Point& p, const double& d)
+{
+    return { p[0] / d, p[1] / d, p[2] / d };
+}
+
 /// @brief Addition operator for two points.  Returns a new point that has components that are the
 /// sum of points a and b.
 static Point operator+(const Point& a, const Point& b)
@@ -44,6 +50,9 @@ double distance(const Point& a, const Point& b);
 /// Returns an object that acts like a Vector3D without copying the memory
 /// from the given point.  Provides the Eigen interface for a Point.
 Eigen::Map<const Vector3D> point_as_vector(const Point& p);
+
+/// Returns a Vector3D that is a copy of the given point.
+Vector3D point_to_vector(const Point& p);
 
 /// Creates a linearly spaced list of points between p1 and p2 with the specified number of
 /// intervals.

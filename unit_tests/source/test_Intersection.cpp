@@ -7,7 +7,7 @@
 #include <iostream>
 
 static constexpr double tol        = 1e-6;
-static constexpr bool print_status = true;
+static constexpr bool print_status = false;
 
 /// @brief A functor for a paraboloid to use with non-linear solvers to find the signed distance and
 /// nearest point to a given point.
@@ -183,9 +183,12 @@ int main()
 
     // Test the intersection algorithm
 
-    auto paraboloid_level_set = [](simple_math::Point p) -> double {
-        auto nearest_point = find_nearest_point(simple_math::point_as_vector(p));
-        return nearest_point.s;
+    simple_math::SignedDistanceFunction paraboloid_level_set = {
+        [](const simple_math::Point& p) -> double {
+            auto nearest_point = find_nearest_point(simple_math::point_as_vector(p));
+            return nearest_point.s;
+        },
+        2
     };
 
     // Case: single intersection
