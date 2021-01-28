@@ -26,6 +26,7 @@ using DynamicUInt16Matrix = Eigen::Matrix<uint16_t, Eigen::Dynamic, Eigen::Dynam
 using DynamicUInt32Vector = Eigen::Matrix<uint32_t, Eigen::Dynamic, 1>;
 using DynamicUInt32Matrix = Eigen::Matrix<uint32_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 using DynamicUInt64Matrix = Eigen::Matrix<uint64_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+using DynamicBoolMatrix = Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 }
 
 // Provide serialization specialization for Eigen types
