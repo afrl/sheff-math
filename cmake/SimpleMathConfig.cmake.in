@@ -1,8 +1,16 @@
 # Make sure we have public dependencies available
-find_package(Utility CONFIG REQUIRED HINTS 
-  "${CMAKE_SOURCE_DIR}/../utility/install_dir" "${CMAKE_SOURCE_DIR}/../../utility/install_dir" "${CMAKE_SOURCE_DIR}/modules/utility/install_dir")
-find_package(Eigen3 3.3.0 CONFIG REQUIRED HINTS 
-  "${CMAKE_SOURCE_DIR}/../third_party/eigen_install_dir" "${CMAKE_SOURCE_DIR}/../../third_party/eigen_install_dir" "${CMAKE_SOURCE_DIR}/modules/third_party/eigen_install_dir")
+if(NOT TARGET Utility::Utility)
+    message(STATUS "Utility did not already exist, finding package.")
+    find_package(Utility CONFIG REQUIRED HINTS 
+        "${PROJECT_SOURCE_DIR}/../../first_party/utility/build"
+        NO_CMAKE_PACKAGE_REGISTRY)
+endif()
+
+if(NOT TARGET Eigen3::Eigen)
+    message(STATUS "Eigen did not already exist, finding package.")
+    find_package(Eigen3 3.3.0 CONFIG REQUIRED HINTS 
+        "${PROJECT_SOURCE_DIR}/../../third_party/eigen_install_dir")
+endif()
 
 set(SIMPLEMATH_INC_DIR "@SIMPLEMATH_INCLUDE@")
 
