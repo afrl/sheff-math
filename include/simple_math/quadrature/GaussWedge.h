@@ -103,6 +103,7 @@ inline GaussWedge<1>::GaussWedge()
 {
     xis_     = new double[n_points()];
     etas_    = new double[n_points()];
+    zetas_    = new double[n_points()];
     weights_ = new double[n_points()];
 
     xis_[0]     = 1.0 / 3;
@@ -201,6 +202,7 @@ inline GaussWedge<3>::GaussWedge()
 {
     xis_     = new double[n_points()];
     etas_    = new double[n_points()];
+    zetas_    = new double[n_points()];
     weights_ = new double[n_points()];
 
     auto val1       = 1.0 / 6;

@@ -165,6 +165,7 @@ inline GaussTetrahedron<3>::GaussTetrahedron()
 {
     xis_     = new double[n_points()];
     etas_    = new double[n_points()];
+    zetas_   = new double[n_points()];
     weights_ = new double[n_points()];
 
     xis_[0]     = 0.25;
