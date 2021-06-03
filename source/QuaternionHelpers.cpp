@@ -69,9 +69,15 @@ void QuaternionHelpers::get_direction_cosine_matrix(const Quaternion& quaterion,
 
 void QuaternionHelpers::get_voigt_rotation_matrix(const Quaternion& quaterion, VoigtMatrix& VRM)
 {
-    VRM.resize(6, 6);
+    
     Matrix3D a = get_direction_cosine_matrix(quaterion);
+    get_voigt_rotation_matrix(a, VRM);
+}
 
+void simple_math::QuaternionHelpers::get_voigt_rotation_matrix(const simple_math::Matrix3D& a,
+                                                               VoigtMatrix& VRM)
+{
+    VRM.resize(6, 6);
     VRM(0, 0) = a(0, 0) * a(0, 0);
     VRM(0, 1) = a(0, 1) * a(0, 1);
     VRM(0, 2) = a(0, 2) * a(0, 2);

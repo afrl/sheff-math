@@ -113,6 +113,8 @@ namespace simple_math
 		/// Note: matrix transforms from unprimed to primed
 		/// i.e. $ v_i' = a_{ij} * v_j, where a_{ij} is the rotation matrix and v is a Voigt vector
 		static void get_voigt_rotation_matrix(const Quaternion & quaterion, VoigtMatrix & VRM);
+		/// Same as other signature, but takes the direction cosine matrix instead of the quaternion.
+        static void get_voigt_rotation_matrix(const simple_math::Matrix3D& dcm, VoigtMatrix& VRM);
 
 		///Populate 6x6 matrix which will rotate a Voigt engineering strain
 		/// Note: Ordering of voigt notation is standard (xx, yy, zz, yz, xz, xz)
