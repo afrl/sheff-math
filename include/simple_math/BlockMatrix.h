@@ -3,6 +3,7 @@
 #include "utility/Exceptions.h"
 #include "utility/Range.h"
 
+#include <limits>
 #include <memory>
 #include <utility>
 #include <vector>

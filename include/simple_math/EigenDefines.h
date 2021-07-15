@@ -5,6 +5,8 @@
 #include "Defines.h"
 #include "HeapPreallocatedMatrix.h"
 #include "utility/Exceptions.h"
+#include "utility/Slice.h"
+#include "utility/serialization/NamedValue.h"
 
 #include <numeric>
 

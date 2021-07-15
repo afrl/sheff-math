@@ -1,9 +1,8 @@
-#include "..\include\simple_math\VoigtHelpers.h"
+#include "simple_math/VoigtHelpers.h"
 
 #include "Eigen/Eigenvalues"
 #include "simple_math/EigenDefines.h"
 #include "simple_math/Utility.h"
-#include "simple_math/VoigtHelpers.h"
 #include "utility/ContainerSearch.h"
 #include "utility/Range.h"
 
