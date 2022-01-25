@@ -3,11 +3,12 @@
 #include "utility/Exceptions.h"
 #include "utility/Range.h"
 
+#include <iomanip>
 #include <limits>
 #include <memory>
+#include <sstream>
 #include <utility>
 #include <vector>
-#include <iomanip>
 
 namespace simple_math
 {

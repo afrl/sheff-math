@@ -21,14 +21,19 @@ using GeneralVector    = Eigen::Matrix<FloatType, Eigen::Dynamic, 1>;
 using GeneralMatrix    = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 using EigenBlockVector = BlockVector<GeneralVector>;
 using EigenBlockMatrix = BlockMatrix<GeneralMatrix>;
-using DynamicInt16Matrix = Eigen::Matrix<int16_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
-using DynamicInt32Matrix = Eigen::Matrix<int32_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
-using DynamicInt64Matrix = Eigen::Matrix<int64_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
-using DynamicUInt16Matrix = Eigen::Matrix<uint16_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
-using DynamicUInt32Vector = Eigen::Matrix<uint32_t, Eigen::Dynamic, 1>;
-using DynamicUInt32Matrix = Eigen::Matrix<uint32_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
-using DynamicUInt64Matrix = Eigen::Matrix<uint64_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
-using DynamicBoolMatrix = Eigen::Matrix<bool, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+
+template<typename T>
+using DynamicVector = Eigen::Matrix<T, Eigen::Dynamic, 1, Eigen::RowMajor>;
+template<typename T>
+using DynamicMatrix       = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+using DynamicDoubleMatrix = DynamicMatrix<double>;
+using DynamicInt16Matrix  = DynamicMatrix<int16_t>;
+using DynamicInt32Matrix  = DynamicMatrix<int32_t>;
+using DynamicInt64Matrix  = DynamicMatrix<int64_t>;
+using DynamicUInt16Matrix = DynamicMatrix<uint16_t>;
+using DynamicUInt32Matrix = DynamicMatrix<uint32_t>;
+using DynamicUInt64Matrix = DynamicMatrix<uint64_t>;
+using DynamicBoolMatrix   = DynamicMatrix<bool>;
 }
 
 // Provide serialization specialization for Eigen types
