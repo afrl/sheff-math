@@ -23,7 +23,7 @@ using EigenBlockVector = BlockVector<GeneralVector>;
 using EigenBlockMatrix = BlockMatrix<GeneralMatrix>;
 
 template<typename T>
-using DynamicVector = Eigen::Matrix<T, Eigen::Dynamic, 1, Eigen::RowMajor>;
+using DynamicVector = Eigen::Matrix<T, Eigen::Dynamic, 1>;
 template<typename T>
 using DynamicMatrix       = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 using DynamicDoubleMatrix = DynamicMatrix<double>;
