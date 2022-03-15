@@ -27,9 +27,11 @@ using DynamicVector = Eigen::Matrix<T, Eigen::Dynamic, 1>;
 template<typename T>
 using DynamicMatrix       = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 using DynamicDoubleMatrix = DynamicMatrix<double>;
+using DynamicInt8Matrix   = DynamicMatrix<int8_t>;
 using DynamicInt16Matrix  = DynamicMatrix<int16_t>;
 using DynamicInt32Matrix  = DynamicMatrix<int32_t>;
 using DynamicInt64Matrix  = DynamicMatrix<int64_t>;
+using DynamicUInt8Matrix  = DynamicMatrix<uint8_t>;
 using DynamicUInt16Matrix = DynamicMatrix<uint16_t>;
 using DynamicUInt32Matrix = DynamicMatrix<uint32_t>;
 using DynamicUInt64Matrix = DynamicMatrix<uint64_t>;
