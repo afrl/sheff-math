@@ -54,6 +54,10 @@ Eigen::Map<const Vector3D> point_as_vector(const Point& p);
 /// Returns a Vector3D that is a copy of the given point.
 Vector3D point_to_vector(const Point& p);
 
+/// Returns an object that acts like a DynamicDoubleMatrix without copying the memory
+/// from the given points.  Provides the Eigen interface for a list of Point objects.
+Eigen::Map<const DynamicDoubleMatrix> points_as_matrix(const std::vector<Point>& points);
+
 /// Creates a linearly spaced list of points between p1 and p2 with the specified number of
 /// intervals.
 std::vector<Point> linspace(const Point& p1, const Point& p2, const int& n_intervals);

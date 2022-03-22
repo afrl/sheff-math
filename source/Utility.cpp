@@ -27,6 +27,11 @@ Vector3D point_to_vector(const Point& p)
     return Vector3D(p[0], p[1], p[2]);
 }
 
+Eigen::Map<const DynamicDoubleMatrix> points_as_matrix(const std::vector<Point>& points)
+{
+    return Eigen::Map<const DynamicDoubleMatrix>(points.front().data(), points.size(), 3);
+}
+
 std::vector<Point> linspace(const Point& p1, const Point& p2, const int& n_intervals)
 {
     using namespace point_operators;
