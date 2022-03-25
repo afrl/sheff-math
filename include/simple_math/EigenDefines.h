@@ -13,6 +13,7 @@
 namespace simple_math
 {
 using Quaternion       = Eigen::Quaternion<FloatType>;
+using Vector2D         = Eigen::Matrix<FloatType, 2, 1>;
 using Vector3D         = Eigen::Matrix<FloatType, 3, 1>;
 using Matrix3D         = Eigen::Matrix<FloatType, 3, 3>;
 using VoigtVector      = Eigen::Matrix<FloatType, Eigen::Dynamic, 1, 0, 6>;
