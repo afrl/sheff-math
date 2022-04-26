@@ -16,8 +16,8 @@ using Quaternion       = Eigen::Quaternion<FloatType>;
 using Vector2D         = Eigen::Matrix<FloatType, 2, 1>;
 using Vector3D         = Eigen::Matrix<FloatType, 3, 1>;
 using Matrix3D         = Eigen::Matrix<FloatType, 3, 3>;
-using VoigtVector      = Eigen::Matrix<FloatType, Eigen::Dynamic, 1, 0, 6>;
-using VoigtMatrix      = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, 0, 6, 6>;
+using VoigtVector      = Eigen::Matrix<FloatType, 6, 1>;
+using VoigtMatrix      = Eigen::Matrix<FloatType, 6, 6, Eigen::RowMajor>;
 using GeneralVector    = Eigen::Matrix<FloatType, Eigen::Dynamic, 1>;
 using GeneralMatrix    = Eigen::Matrix<FloatType, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 using EigenBlockVector = BlockVector<GeneralVector>;
@@ -26,7 +26,19 @@ using EigenBlockMatrix = BlockMatrix<GeneralMatrix>;
 template<typename T>
 using DynamicVector = Eigen::Matrix<T, Eigen::Dynamic, 1>;
 template<typename T>
-using DynamicMatrix       = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+using DynamicMatrix = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+template<typename T>
+using DynamicMatrixColMajor = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic, Eigen::ColMajor>;
+
+using DynamicDoubleVector = DynamicVector<double>;
+using DynamicInt16Vector  = DynamicVector<int16_t>;
+using DynamicInt32Vector  = DynamicVector<int32_t>;
+using DynamicInt64Vector  = DynamicVector<int64_t>;
+using DynamicUInt16Vector = DynamicVector<uint16_t>;
+using DynamicUInt32Vector = DynamicVector<uint32_t>;
+using DynamicUInt64Vector = DynamicVector<uint64_t>;
+using DynamicBoolVector   = DynamicVector<bool>;
+
 using DynamicDoubleMatrix = DynamicMatrix<double>;
 using DynamicInt8Matrix   = DynamicMatrix<int8_t>;
 using DynamicInt16Matrix  = DynamicMatrix<int16_t>;
@@ -37,6 +49,9 @@ using DynamicUInt16Matrix = DynamicMatrix<uint16_t>;
 using DynamicUInt32Matrix = DynamicMatrix<uint32_t>;
 using DynamicUInt64Matrix = DynamicMatrix<uint64_t>;
 using DynamicBoolMatrix   = DynamicMatrix<bool>;
+
+template<typename T>
+using DynamicMatrixColMajorMap = Eigen::Map<DynamicMatrixColMajor<T>>;
 }
 
 // Provide serialization specialization for Eigen types
