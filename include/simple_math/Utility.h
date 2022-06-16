@@ -88,6 +88,9 @@ double calculate_mean(const std::vector<double>& data);
 /// Returns the standard deviation for a list of doubles
 double calculate_std_dev(const std::vector<double>& data);
 
+/// Returns an object that maps a std::vector to an Eigen vector
+Eigen::Map<const DynamicDoubleVector> as_eigen_vector(const std::vector<double>& data);
+
 namespace detail
 {
 template<typename T>

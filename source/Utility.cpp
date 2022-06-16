@@ -85,4 +85,8 @@ double calculate_std_dev(const std::vector<double>& data)
     std_dev = sqrt(std_dev / data.size());
     return std_dev;
 }
+Eigen::Map<const DynamicDoubleVector> as_eigen_vector(const std::vector<double>& data)
+{
+    return Eigen::Map<const DynamicDoubleVector>(data.data(), data.size());
+}
 };
