@@ -15,7 +15,7 @@ namespace simple_math
 using Quaternion       = Eigen::Quaternion<FloatType>;
 using Vector2D         = Eigen::Matrix<FloatType, 2, 1>;
 using Vector3D         = Eigen::Matrix<FloatType, 3, 1>;
-using Matrix3D         = Eigen::Matrix<FloatType, 3, 3>;
+using Matrix3D         = Eigen::Matrix<FloatType, 3, 3, Eigen::RowMajor>;
 using VoigtVector      = Eigen::Matrix<FloatType, 6, 1>;
 using VoigtMatrix      = Eigen::Matrix<FloatType, 6, 6, Eigen::RowMajor>;
 using GeneralVector    = Eigen::Matrix<FloatType, Eigen::Dynamic, 1>;
@@ -50,8 +50,21 @@ using DynamicUInt32Matrix = DynamicMatrix<uint32_t>;
 using DynamicUInt64Matrix = DynamicMatrix<uint64_t>;
 using DynamicBoolMatrix   = DynamicMatrix<bool>;
 
+// Useful aliases that map raw arrays to Eigen objects.
+template<typename T>
+using DynamicVectorMap = Eigen::Map<DynamicVector<T>>;
+template<typename T>
+using DynamicMatrixMap = Eigen::Map<DynamicMatrix<T>>;
 template<typename T>
 using DynamicMatrixColMajorMap = Eigen::Map<DynamicMatrixColMajor<T>>;
+
+// Useful aliases to treat references to Eigen objects.
+template<typename T>
+using DynamicVectorRef = Eigen::Ref<DynamicVector<T>>;
+template<typename T>
+using DynamicMatrixRef = Eigen::Ref<DynamicMatrix<T>>;
+template<typename T>
+using DynamicMatrixColMajorRef = Eigen::Ref<DynamicMatrixColMajor<T>>;
 }
 
 // Provide serialization specialization for Eigen types

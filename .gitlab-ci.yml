@@ -1,0 +1,27 @@
+include:
+  - project: 'sheff/sheff_gitlab_ci'
+    ref: main
+    file: 'setup_build.yml'
+  - project: 'sheff/sheff_gitlab_ci'
+    ref: main
+    file: 'setup_doxygen.yml'
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    # Ensure the latest JSON artifacts are in ../json/install_dir
+    - test -d ../json || curl --location --output artifacts.zip "https://git.act3-ace.com/api/v4/projects/818/jobs/artifacts/main/download?job=build&job_token=$CI_JOB_TOKEN" && unzip artifacts.zip && rm artifacts.zip && mkdir ../json && mv ./install_dir ../json/install_dir
+    # Ensure the latest JSON artifacts are in ../eigen/install_dir
+    - test -d ../eigen || curl --location --output artifacts.zip "https://git.act3-ace.com/api/v4/projects/822/jobs/artifacts/main/download?job=build&job_token=$CI_JOB_TOKEN" && unzip artifacts.zip && rm artifacts.zip && mkdir ../eigen && mv ./install_dir ../eigen/install_dir
+
+    # Ensure the latest utility artifacts are in ../utility/install_dir
+    # Pull artifacts first from a branch with the same name as this branch, and if it fails then pull from development    
+    - test -d ../utility || (test $(curl --write-out '%{http_code}' --location --output artifacts.zip "https://git.act3-ace.com/api/v4/projects/816/jobs/artifacts/$CI_COMMIT_REF_NAME/download?job=build&job_token=$CI_JOB_TOKEN") -eq 200 || test $(curl --write-out '%{http_code}' --location --output artifacts.zip "https://git.act3-ace.com/api/v4/projects/816/jobs/artifacts/development/download?job=build&job_token=$CI_JOB_TOKEN") -eq 200) && unzip artifacts.zip && rm artifacts.zip && mkdir ../utility && mv ./install_dir ../utility/install_dir
+
+    - python3 make.py --config --build --verbose --make-tests --test
+    - python3 make.py --config --build --verbose --make-tests --mode=RelWithDebInfo
+  

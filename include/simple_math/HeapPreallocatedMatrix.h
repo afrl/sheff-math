@@ -1,6 +1,5 @@
 #pragma once
 
-#define EIGEN_MAX_CPP_VER 11
 #include "Eigen/Eigen"
 
 #include "utility/Exceptions.h"
