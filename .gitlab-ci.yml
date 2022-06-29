@@ -15,7 +15,7 @@ build:
   script:
     # Ensure the latest JSON artifacts are in ../json/install_dir
     - ./sheff_gitlab_ci/import_json.sh
-    # Ensure the latest JSON artifacts are in ../eigen/install_dir
+    # Ensure the latest Eigen artifacts are in ../eigen/install_dir
     - ./sheff_gitlab_ci/import_eigen.sh
 
     # Ensure the latest utility artifacts are in ../utility/install_dir
