@@ -16,6 +16,7 @@ using Quaternion       = Eigen::Quaternion<FloatType>;
 using Vector2D         = Eigen::Matrix<FloatType, 2, 1>;
 using Vector3D         = Eigen::Matrix<FloatType, 3, 1>;
 using Matrix3D         = Eigen::Matrix<FloatType, 3, 3, Eigen::RowMajor>;
+using Matrix2x3        = Eigen::Matrix<double, 2, 3, Eigen::RowMajor>;
 using VoigtVector      = Eigen::Matrix<FloatType, 6, 1>;
 using VoigtMatrix      = Eigen::Matrix<FloatType, 6, 6, Eigen::RowMajor>;
 using GeneralVector    = Eigen::Matrix<FloatType, Eigen::Dynamic, 1>;
@@ -138,6 +139,60 @@ void deserialize(SerializerType& s, simple_math::GeneralVector& v)
     s(v_size);
     v.resize(v_size);
     s(slice(v.data(), v.rows()));
+}
+
+namespace detail
+{
+/// simple_math::GeneralVector serialize(...) specialization
+template<typename SerializerType, typename MatrixType>
+void serialize_matrix(SerializerType& s, const MatrixType& m)
+{
+    s(utility::named_value("rows", m.rows()));
+    s(utility::named_value("cols", m.cols()));
+    s(utility::named_value("data", utility::slice(m.data(), m.rows() * m.cols())));
+}
+
+/// simple_math::GeneralVector deserialize(...) specialization
+template<typename SerializerType, typename MatrixType>
+void deserialize_matrix(SerializerType& s, MatrixType& m)
+{
+    Eigen::Index n_rows;
+    s(n_rows);
+
+    Eigen::Index n_cols;
+    s(n_cols);
+
+    m.resize(n_rows, n_cols);
+    s(utility::slice(m.data(), m.rows() * m.cols()));
+}
+}
+
+/// simple_math::DynamicDoubleMatrix serialize(...) specialization
+template<typename SerializerType>
+void serialize(SerializerType& s, const simple_math::DynamicDoubleMatrix& m)
+{
+    detail::serialize_matrix(m);
+}
+
+/// simple_math::DynamicDoubleMatrix deserialize(...) specialization
+template<typename SerializerType>
+void deserialize(SerializerType& s, simple_math::DynamicDoubleMatrix& m)
+{
+    detail::deserialize_matrix(m);
+}
+
+/// simple_math::Matrix2x3 serialize(...) specialization
+template<typename SerializerType>
+void serialize(SerializerType& s, const simple_math::Matrix2x3& m)
+{
+    detail::serialize_matrix(s, m);
+}
+
+/// simple_math::Matrix2x3 deserialize(...) specialization
+template<typename SerializerType>
+void deserialize(SerializerType& s, simple_math::Matrix2x3& m)
+{
+    detail::deserialize_matrix(s, m);
 }
 }
 
