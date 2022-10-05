@@ -1,27 +1,37 @@
 include:
-  - project: 'sheff/sheff_gitlab_ci'
+  - project: 'rxcc_computation/sheff/devops/sheff_gitlab_ci'
     ref: main
-    file: 'setup_build.yml'
-  - project: 'sheff/sheff_gitlab_ci'
-    ref: main
-    file: 'setup_doxygen.yml'
+    file: 'setup_build.yml' 
 
 stages:
   - build
-  - deploy
 
-build:
+build_ubuntu_22:
   stage: build
+  extends: .build_ubuntu_22
   script:
     # Ensure the latest JSON artifacts are in ../json/install_dir
-    - ./sheff_gitlab_ci/import_json.sh
+    - ./sheff_gitlab_ci/import_artifacts.sh json $OS
     # Ensure the latest Eigen artifacts are in ../eigen/install_dir
-    - ./sheff_gitlab_ci/import_eigen.sh
+    - ./sheff_gitlab_ci/import_artifacts.sh eigen $OS
 
     # Ensure the latest utility artifacts are in ../utility/install_dir
-    # Pull artifacts first from a branch with the same name as this branch, and if it fails then pull from development    
-    - ./sheff_gitlab_ci/import_utility.sh
+    - ./sheff_gitlab_ci/import_artifacts.sh utility $OS
 
-    - python3 make.py --config --build --verbose --make-tests --test
+    - python3 make.py --config --build --verbose --make-tests --mode=Debug --test
     - python3 make.py --config --build --verbose --make-tests --mode=RelWithDebInfo
-  
+
+build_centos_7:
+  stage: build
+  extends: .build_centos_7
+  script:
+    # Ensure the latest JSON artifacts are in ../json/install_dir
+    - ./sheff_gitlab_ci/import_artifacts.sh json $OS
+    # Ensure the latest Eigen artifacts are in ../eigen/install_dir
+    - ./sheff_gitlab_ci/import_artifacts.sh eigen $OS
+
+    # Ensure the latest utility artifacts are in ../utility/install_dir
+    - ./sheff_gitlab_ci/import_artifacts.sh utility $OS
+
+    - python3 make.py --config --build --verbose --make-tests --mode=Debug --test
+    - python3 make.py --config --build --verbose --make-tests --mode=RelWithDebInfo
