@@ -1,5 +1,7 @@
 #include "simple_math/Intersection.h"
 
+#include <cmath>
+
 namespace simple_math
 {
 /// @brief Takes a guess of where an intersection should be and iteratively refines the guess closer
@@ -22,7 +24,7 @@ static bool refine_guess(const std::function<double(Point)>& signed_distance_fun
     int curr_iteration = 1;
     auto residual      = signed_distance_function(guess_p);
     double delta_s;
-    while (abs(residual) > tol && curr_iteration <= max_iterations)
+    while (std::abs(residual) > tol && curr_iteration <= max_iterations)
     {
         auto approx_grad = (residual - prev_residual) / (guess_s - prev_s);
         prev_s           = guess_s;

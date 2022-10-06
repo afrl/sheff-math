@@ -171,28 +171,28 @@ void deserialize_matrix(SerializerType& s, MatrixType& m)
 template<typename SerializerType>
 void serialize(SerializerType& s, const simple_math::DynamicDoubleMatrix& m)
 {
-    detail::serialize_matrix(m);
+    detail::serialize_matrix<SerializerType, simple_math::DynamicDoubleMatrix>(m);
 }
 
 /// simple_math::DynamicDoubleMatrix deserialize(...) specialization
 template<typename SerializerType>
 void deserialize(SerializerType& s, simple_math::DynamicDoubleMatrix& m)
 {
-    detail::deserialize_matrix(m);
+    detail::deserialize_matrix<SerializerType, simple_math::DynamicDoubleMatrix>(m);
 }
 
 /// simple_math::Matrix2x3 serialize(...) specialization
 template<typename SerializerType>
 void serialize(SerializerType& s, const simple_math::Matrix2x3& m)
 {
-    detail::serialize_matrix(s, m);
+    detail::serialize_matrix<SerializerType, simple_math::Matrix2x3>(s, m);
 }
 
 /// simple_math::Matrix2x3 deserialize(...) specialization
 template<typename SerializerType>
 void deserialize(SerializerType& s, simple_math::Matrix2x3& m)
 {
-    detail::deserialize_matrix(s, m);
+    detail::deserialize_matrix<SerializerType, simple_math::Matrix2x3>(s, m);
 }
 }
 

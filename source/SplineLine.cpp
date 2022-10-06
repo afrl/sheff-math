@@ -1,5 +1,3 @@
-#pragma once
-
 #include "simple_math/SplineLine.h"
 
 namespace simple_math
