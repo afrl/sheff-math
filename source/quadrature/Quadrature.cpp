@@ -123,6 +123,9 @@ Quadrature::Quadrature(const QuadratureScheme& quadrature_scheme,
                         throw _UTIL_MSG_EXCEPT("Switch not implemented for NewtonCotes3D order " +
                                                std::to_string(quadrature_scheme.integration_order));
                 }
+            case QuadratureType::UNKNOWN:
+            default:
+                throw _UTIL_MSG_EXCEPT("Unknown type of quadrature.");
         }
     }
     else

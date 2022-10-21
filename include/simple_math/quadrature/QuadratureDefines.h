@@ -37,8 +37,10 @@ static std::array<double, 6> get_extent(QuadratureType type)
         case QuadratureType::Gauss2DTriangle: return { 0, 1, 0, 1, 0, 0 };
         case QuadratureType::Gauss3DTet: return { 0, 1, 0, 1, 0, 1 };
         case QuadratureType::Gauss3DWedge: return { 0, 1, 0, 1, -1, 1 };
+        case QuadratureType::UNKNOWN:
+        default:
+            throw _UTIL_MSG_EXCEPT("Unrecognized type of quadrature.");
     }
-    throw _UTIL_MSG_EXCEPT("Unrecognized type of quadrature.");
 }
 
 /// Stores all of the information needed to describe a quadrature scheme.
