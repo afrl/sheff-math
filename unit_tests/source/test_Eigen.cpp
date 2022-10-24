@@ -3,8 +3,10 @@
 #include <iostream>
 #include <iomanip>
 
+
 #include "simple_math/Utility.h"
 #include "simple_math/EigenDefines.h"
+#include "simple_math/HeapPreallocatedMatrix.h"
 
 using namespace simple_math;
 

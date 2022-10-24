@@ -3,7 +3,7 @@
 #include "BlockMatrix.h"
 #include "BlockVector.h"
 #include "Defines.h"
-#include "HeapPreallocatedMatrix.h"
+#include "Eigen/Eigen"
 #include "utility/Exceptions.h"
 #include "utility/Slice.h"
 #include "utility/serialization/NamedValue.h"
