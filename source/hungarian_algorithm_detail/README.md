@@ -1,5 +1,4 @@
-Fast C++ implementation of the Hungarian algorithm
---------------------------------------------------
+## Fast C++ implementation of the Hungarian algorithm {#page_hungarian}
 
 This is an open-source implementation of the "O(N^3)" dynamic-programming version of the
 Hungarian algorithm, for weighted perfect bipartite matching.
