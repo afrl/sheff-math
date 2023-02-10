@@ -68,6 +68,7 @@ class BlockMatrix
     unsigned int get_n_blocks() const;
     /// Get the number of rows
     unsigned int get_n_rows() const;
+
     /// Get a string representation of the matrix for debugging purposes
     std::string str() const;
 

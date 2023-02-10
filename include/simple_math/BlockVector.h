@@ -51,6 +51,9 @@ namespace simple_math
 		/// Get the number of blocks
 		unsigned int get_n_blocks() const;
 
+		/// Get a string representation of the matrix for debugging purposes
+        std::string str() const;
+
 	private:
 		std::vector<std::unique_ptr<VectorType>> blocks_;
 	};
@@ -143,4 +146,53 @@ namespace simple_math
 	{
 		return static_cast<unsigned int>(blocks_.size());
 	}
-};
+
+	template<typename VectorType>
+    inline std::string BlockVector<VectorType>::str() const
+    {
+        typename VectorType::Index n_rows_per_block = 0;
+        for (auto& block : blocks_)
+        {
+            if (block != nullptr)
+            {
+                if (n_rows_per_block == 0)
+                {
+                    n_rows_per_block = block->rows();
+                }
+                else if (block->rows() != n_rows_per_block)
+                {
+                    throw _UTIL_MSG_EXCEPT_C(
+                      "Some of the blocks did not have the same size.  To print "
+                      "a block vector as a string, this property is required.");
+                }
+            }
+        }
+
+        std::stringstream ss;
+        ss.precision(std::numeric_limits<double>::max_digits10);
+        for (auto i : utility::range(blocks_.size()))
+        {
+            auto& block = blocks_[i];
+            for (auto row_in_block : utility::range(n_rows_per_block))
+            {
+                ss << " | ";
+                if (block != nullptr)
+                {
+                    ss << std::setw(26) << (*block)(row_in_block);
+                }
+                else
+                {
+                    ss << std::setw(26) << 0;
+                }
+                ss << " |\n";
+            }
+
+            if (i < blocks_.size() - 1)
+            {
+                ss << " " << std::string(30, '-')
+                   << "\n";
+            }
+        }
+        return ss.str();
+    }
+    };
