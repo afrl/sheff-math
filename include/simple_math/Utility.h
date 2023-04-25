@@ -91,6 +91,24 @@ double calculate_std_dev(const std::vector<double>& data);
 /// Returns an object that maps a std::vector to an Eigen vector
 Eigen::Map<const DynamicDoubleVector> as_eigen_vector(const std::vector<double>& data);
 
+
+struct ClosestPoint
+{
+    enum Type
+    {
+        INTERIOR,    ///< Closest point is interior to the line segment
+        END_POINT_1, ///< Closest point is at first end point, p1
+        END_POINT_2  ///< Closest point is at first end point, p2
+    };
+    Type type;
+    double distance;
+    Point closest_point;
+};
+/// @brief Finds the closest point from p to the line segment defined by segment_p1 and segment_p2
+ClosestPoint closest_point_on_line_segment(const Point& p,
+                                           const Point& segment_p1,
+                                           const Point& segment_p2);
+
 namespace detail
 {
 template<typename T>
