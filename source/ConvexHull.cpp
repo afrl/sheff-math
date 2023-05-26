@@ -24,8 +24,8 @@ std::vector<std::size_t> convex_hull_for_3d_points_on_plane(
     }
 
     // Find point closest to the lower bound, which will be used to define our reference vector
-    double smallest_dist    = std::numeric_limits<double>::max();
-    int smallest_dist_index = 0;
+    double smallest_dist            = std::numeric_limits<double>::max();
+    std::size_t smallest_dist_index = 0;
     for (auto i : utility::indices(points))
     {
         auto p      = points[i];
@@ -81,6 +81,7 @@ std::vector<std::size_t> convex_hull_for_3d_points_on_plane(
     assert(point_index_sorted_by_angle[0] == smallest_dist_index);
 
     // Find the points that would form the convex hull
+    // Refer to https://lvngd.com/blog/convex-hull-graham-scan-algorithm-python/ for nice figures
     std::vector<std::size_t> convex_hull_point_indices = { point_index_sorted_by_angle[0],
                                                            point_index_sorted_by_angle[1] };
     for (auto i : utility::range(std::size_t(2), point_index_sorted_by_angle.size()))
@@ -94,8 +95,10 @@ std::vector<std::size_t> convex_hull_for_3d_points_on_plane(
             auto p3_index = convex_hull_point_indices[convex_hull_point_indices.size() - 1];
             auto w =
               (points[p2_index] - points[p1_index]).cross(points[p3_index] - points[p1_index]);
-            if (w.dot(plane_normal) < 0)
+            auto w_dot_normal = w.dot(plane_normal);
+            if (w_dot_normal < 0)
             {
+                // Efficiently remove the second to last value
                 convex_hull_point_indices[convex_hull_point_indices.size() - 2] = p3_index;
                 convex_hull_point_indices.pop_back();
             }
@@ -103,6 +106,21 @@ std::vector<std::size_t> convex_hull_for_3d_points_on_plane(
             {
                 break;
             }
+        }
+    }
+    // Correction to the reference above, if the last point referenced by
+    // point_index_sorted_by_angle happens to break convex hull, it will not be removed.  This
+    // checks that the condition of the cross-product aligning with the normal holds for the last
+    // point as well.
+    {
+        auto p1_index = convex_hull_point_indices[convex_hull_point_indices.size() - 2];
+        auto p2_index = convex_hull_point_indices[convex_hull_point_indices.size() - 1];
+        auto p3_index = convex_hull_point_indices[0];
+        auto w = (points[p2_index] - points[p1_index]).cross(points[p3_index] - points[p1_index]);
+        auto w_dot_normal = w.dot(plane_normal);
+        if (w_dot_normal < 0)
+        {
+            convex_hull_point_indices.pop_back();
         }
     }
 

@@ -19,7 +19,7 @@ struct Intersection
     Type type;
 };
 
-using PolygonIndex = uint8_t;
+using PolygonIndex = uint16_t;
 struct SplitPolygonResult
 {
     std::vector<PolygonIndex> points_on_negative_side;
