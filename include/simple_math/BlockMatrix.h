@@ -20,8 +20,13 @@ template<typename MatrixType>
 class BlockMatrix
 {
   public:
-    BlockMatrix(const unsigned int n_rows);
+    BlockMatrix();
+    BlockMatrix(const BlockMatrix&) = delete;
     BlockMatrix(BlockMatrix&& other) noexcept;
+    BlockMatrix(const unsigned int n_rows);
+
+    /// Resizes the block structure (not matrices within each block)
+    void resize(const unsigned int n_rows);
 
     /// Set the (i, j) block by copy assignment
     void set_block(const unsigned int i, const unsigned int j, const MatrixType& m);
@@ -69,6 +74,9 @@ class BlockMatrix
     /// Get the number of rows
     unsigned int get_n_rows() const;
 
+    // Operator overloads
+    BlockMatrix& operator=(BlockMatrix&& other) noexcept;
+
     /// Get a string representation of the matrix for debugging purposes
     std::string str() const;
 
@@ -84,6 +92,12 @@ class BlockMatrix
 
 
 template<typename MatrixType>
+inline BlockMatrix<MatrixType>::BlockMatrix()
+  : n_rows_(0)
+{
+}
+
+template<typename MatrixType>
 inline BlockMatrix<MatrixType>::BlockMatrix(const unsigned int n_rows)
   : n_rows_(n_rows)
 {
@@ -91,10 +105,17 @@ inline BlockMatrix<MatrixType>::BlockMatrix(const unsigned int n_rows)
 }
 
 template<typename MatrixType>
-inline simple_math::BlockMatrix<MatrixType>::BlockMatrix(BlockMatrix&& other) noexcept
+inline BlockMatrix<MatrixType>::BlockMatrix(BlockMatrix&& other) noexcept
   : n_rows_(other.n_rows_)
 {
     blocks_.swap(other.blocks_);
+}
+
+template<typename MatrixType>
+inline void BlockMatrix<MatrixType>::resize(const unsigned int n_rows)
+{
+    n_rows_ = n_rows;
+    blocks_.resize(static_cast<std::size_t>(n_rows) * n_rows);
 }
 
 template<typename MatrixType>
@@ -205,6 +226,14 @@ template<typename MatrixType>
 inline unsigned int BlockMatrix<MatrixType>::get_n_rows() const
 {
     return n_rows_;
+}
+
+
+template<typename MatrixType>
+inline BlockMatrix<MatrixType>& BlockMatrix<MatrixType>::operator=(BlockMatrix&& other) noexcept
+{
+    blocks_.swap(other.blocks_);
+    return *this;
 }
 
 template<typename MatrixType>
