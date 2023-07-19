@@ -84,7 +84,7 @@ class BlockMatrix
     std::vector<std::unique_ptr<MatrixType>> blocks_;
     // This could be calculated as static_cast<unsigned int>(sqrt(blocks_.size()))
     // but it is easier to save it.
-    const unsigned int n_rows_;
+    unsigned int n_rows_;
 
     /// Get the single index from the (i, j) index pair
     unsigned int get_unraveled_index(const unsigned int i, const unsigned int j) const;
@@ -233,6 +233,7 @@ template<typename MatrixType>
 inline BlockMatrix<MatrixType>& BlockMatrix<MatrixType>::operator=(BlockMatrix&& other) noexcept
 {
     blocks_.swap(other.blocks_);
+    this->n_rows_ = other.n_rows_;
     return *this;
 }
 
