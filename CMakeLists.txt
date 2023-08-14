@@ -35,6 +35,11 @@ set(SHEFF_EXTERNAL_DEPENDS_targets "")
 set(SHEFF_EXTERNAL_DEPENDS_compile_defs "")
 
 macro(SPECIAL_TARGET_COMMANDS)
+    # Eigen currently doesn't compile with C++20 because std::result_of has been removed and superceded
+    # by std::invoke_result.  Until they fix their library (not fixed in 3.4.1), we need this compile
+    # definition for a workaround.
+    # See: https://gitlab.com/libeigen/eigen/-/issues/1850
+    target_compile_definitions(${MAIN_COMPONENT} PUBLIC _HAS_DEPRECATED_RESULT_OF)
 endmacro()
 
 # Options
