@@ -162,7 +162,7 @@ CircleIntersection intersect_circle_line_segment(const double& r,
 bool is_point_in_polygon(const Point& p, const std::vector<Point>& polygon_points)
 {
     bool is_inside = false;
-    for (int i = 0, j = polygon_points.size() - 1; i < polygon_points.size(); j = i++)
+    for (std::size_t i = 0, j = polygon_points.size() - 1; i < polygon_points.size(); j = i++)
     {
         const bool y_is_between_segment_points =
           ((polygon_points[i][1] <= p[1]) && (p[1] < polygon_points[j][1])) ||
