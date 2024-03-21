@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Defines.h"
+#include "EigenDefines.h"
 
 #include <vector>
 
 namespace simple_math
 {
+/// @brief Result of closest_point_on_line_segment
 struct SegmentClosestPoint
 {
     enum Type
@@ -14,8 +16,11 @@ struct SegmentClosestPoint
         END_POINT_1, ///< Closest point is at first end point, p1
         END_POINT_2  ///< Closest point is at first end point, p2
     };
+    /// Indicates if the closest point on the line segment is at the ends or within the segment.
     Type type;
+    /// Closest distance to the line segment
     double distance;
+    /// Coordinate of the closest point
     Point closest_point;
 };
 
@@ -23,6 +28,26 @@ struct SegmentClosestPoint
 SegmentClosestPoint closest_point_on_line_segment(const Point& p,
                                                   const Point& segment_p1,
                                                   const Point& segment_p2);
+
+/// @brief Result of closest_point_on_lines
+struct LineClosestPoint2D
+{
+    /// Closest distance to the infinite line (ignoring the segment bounds)
+    double distance = -1.0;
+    /// Coordinate of the closest point on the line to the given point
+    Vector2D closest_point = Vector2D::Zero();
+    /// Parametric distance (0 = end point #1, 1 = end point #2) along the infinite line
+    /// that is the closest distance to the given point.
+    double s = 0.0;
+    /// Unit vector along the line segment, returned for convenience.
+    Vector2D line_unit_vector = Vector2D::Zero();
+};
+
+/// @brief Finds the closest point from p to an infinite line defined by segment_p1 and segment_p2
+LineClosestPoint2D closest_point_on_line_2D(const Vector2D& p,
+                                            const Vector2D& segment_p1,
+                                            const Vector2D& segment_p2);
+
 
 struct CircleIntersection
 {

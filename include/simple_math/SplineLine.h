@@ -18,15 +18,21 @@ class SplineLine3D
         Point point;
     };
 
-    SplineLine3D(const std::vector<Point>& points, const int s_0_index, const int s_1_index);
     SplineLine3D(const std::vector<Point>& points);
+    SplineLine3D(const std::vector<Point>& points, const int s_0_index, const int s_1_index);
     SplineLine3D(const DynamicDoubleMatrix& points);
+    SplineLine3D(const DynamicDoubleMatrix& points, const int s_0_index, const int s_1_index);
 
-    /// Samples the line at a given s
+    /// @brief Samples the line at a given s
     Sample at_s(const double& s) const;
 
-    /// Updates the internal spline functions
-    /// Call this if the structure of points is the same, but the values have changed.
+    /// @brief When extra points are included at the beginning and end of the list of points to
+    ///        ensure a smooth spline, this sets the index of the given points for s=0 and s=1.
+    /// Note: Calls update() to refit the points, since this will affect the fit.
+    void set_start_end_indices(const int s_0_index, const int s_1_index);
+
+    /// @brief Updates the internal spline functions. Call this if the structure of points is the
+    ///        same, but the values have changed.
     void update();
 
   private:

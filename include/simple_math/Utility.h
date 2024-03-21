@@ -78,7 +78,11 @@ find_max_real_part(const ComplexVector& vector)
 
 /// Creates a linearly spaced list of double's between start and end with the specified number of
 /// intervals.
-std::vector<double> linspace(const double& start, const double& end, const int& n_intervals);
+/// @param endpoint - if true, then "end" is included. Otherwise, it is not.
+std::vector<double> linspace(const double& start,
+                             const double& end,
+                             const int& n_intervals,
+                             const bool endpoint = true);
 
 /// Returns the mean of a list of doubles
 double calculate_mean(const std::vector<double>& data);
@@ -99,6 +103,9 @@ Point2D to_point2d(const Eigen::MatrixBase<DerivedType>& v)
     return { v[0], v[1] };
 }
 
+/// Returns the mean of a list of 2D vectors or points
+Vector2D mean(const std::vector<Vector2D>& data);
+
 ////////////////////////////////
 // Utilities for 3-D arrays
 
@@ -110,7 +117,16 @@ double distance(const Point& a, const Point& b);
 
 /// Creates a linearly spaced list of points between p1 and p2 with the specified number of
 /// intervals.
-std::vector<Point> linspace(const Point& p1, const Point& p2, const int& n_intervals);
+std::vector<Point> linspace(const Point& p1,
+                            const Point& p2,
+                            const int& n_intervals,
+                            const bool endpoint = true);
+
+/// Returns the mean of a list of 3D vectors or points
+Point mean(const std::vector<Point>& data);
+
+/// Returns the mean of a list of 3D vectors or points
+Vector3D mean(const std::vector<Vector3D>& data);
 
 /// Returns an object that acts like a Vector3D without copying the memory
 /// from the given point.  Provides the Eigen interface for a Point.

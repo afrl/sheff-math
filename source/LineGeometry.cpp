@@ -15,14 +15,15 @@ SegmentClosestPoint closest_point_on_line_segment(const Point& p,
     // This implementation is loosely based on:
     // https://codereview.stackexchange.com/questions/162447/shortest-distance-from-point-to-line-segment-in-3d
 
-    const auto p_vec  = point_as_vector(p);
-    const auto p1_vec = point_as_vector(segment_p1);
-    const auto p2_vec = point_as_vector(segment_p2);
-    auto p1_p         = p_vec - p1_vec;
-    auto p1_p2        = p2_vec - p1_vec;
+    const auto p_vec      = point_as_vector(p);
+    const auto p1_vec     = point_as_vector(segment_p1);
+    const auto p2_vec     = point_as_vector(segment_p2);
+    auto p1_p             = p_vec - p1_vec;
+    auto p1_p2            = p2_vec - p1_vec;
+    auto line_unit_vector = p1_p2.normalized();
 
     // Projection of p onto line p1->p2
-    auto s = p1_p.dot(p1_p2) / p1_p2.dot(p1_p2);
+    auto s = p1_p.dot(line_unit_vector);
     if (s <= 0.)
     {
         return { SegmentClosestPoint::END_POINT_1, distance(p, segment_p1), segment_p1 };
@@ -33,9 +34,22 @@ SegmentClosestPoint closest_point_on_line_segment(const Point& p,
     }
     else
     {
-        auto closest_point = to_point(p1_vec + s * p1_p2);
+        auto closest_point = to_point(p1_vec + s * line_unit_vector);
         return { SegmentClosestPoint::INTERIOR, distance(p, closest_point), closest_point };
     }
+}
+
+LineClosestPoint2D closest_point_on_line_2D(const Vector2D& p,
+                                            const Vector2D& segment_p1,
+                                            const Vector2D& segment_p2)
+{
+    auto p1_p             = p - segment_p1;
+    auto line_unit_vector = (segment_p2 - segment_p1).normalized();
+
+    // Projection of p onto line p1->p2
+    auto s             = p1_p.dot(line_unit_vector);
+    Vector2D closest_point = segment_p1 + s * line_unit_vector;
+    return { (p - closest_point).norm(), closest_point, s, line_unit_vector };
 }
 
 CircleIntersection intersect_circle_line(const double& r,

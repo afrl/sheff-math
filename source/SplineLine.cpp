@@ -29,6 +29,23 @@ SplineLine3D::SplineLine3D(const DynamicDoubleMatrix& points)
     update();
 }
 
+SplineLine3D::SplineLine3D(const DynamicDoubleMatrix& points,
+                           const int s_0_index,
+                           const int s_1_index)
+  : points_ref_(points.data(), points.rows(), points.cols())
+  , s_0_index_(s_0_index)
+  , s_1_index_(s_1_index)
+{
+    update();
+}
+
+void SplineLine3D::set_start_end_indices(const int s_0_index, const int s_1_index)
+{
+    s_0_index_ = s_0_index;
+    s_1_index_ = s_1_index;
+    update();
+}
+
 SplineLine3D::Sample SplineLine3D::at_s(const double& s) const
 {
     // Adjust s to consider s_0_index_ and s_1_index_
