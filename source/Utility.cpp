@@ -101,17 +101,25 @@ std::vector<double> linspace(const double& start,
                              const bool endpoint)
 {
     std::vector<double> result(n_intervals + 1);
-    double denom = endpoint ? n_intervals : n_intervals + 1.;
-    for (int i = 0; i < n_intervals; ++i)
-    {
-        result[i] =
-          start + ((double)i / denom) * (end - start); // This should avoid roundoff issues
-    }
     if (endpoint)
-    {
+    { // Include the endpoint
+        for (int i = 0; i < n_intervals; ++i)
+        {
+            result[i] = start + ((double)i / n_intervals) *
+                                  (end - start); // This should avoid roundoff issues
+        }
         // Make sure that the last value is exactly what you expect (no roundoff)
         result.back() = end;
     }
+    else
+    {
+        for (int i = 0; i < n_intervals + 1; ++i)
+        {
+            result[i] = start + ((double)i / (n_intervals + 1.)) *
+                                  (end - start); // This should avoid roundoff issues
+        }
+    }
+
     return result;
 }
 
